@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: context.xml 5 2009-10-16 15:20:39Z dacracot $ -->
+<Context>
+<!-- ========================================================== -->
+	<ResourceLink name="jdbc/tox" global="jdbc/tox" type="javax.sql.DataSource"/>
+<!-- ========================================================== -->
+</Context>
