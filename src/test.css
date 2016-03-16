@@ -1,0 +1,10 @@
+/* $Id: test.css 5 2009-10-16 15:20:39Z dacracot $ */
+.OuterTable
+{
+	background-color: #999999;
+}
+
+.InnerTable
+{
+	background-color: #CCCCCC;
+}

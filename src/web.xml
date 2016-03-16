@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: web.xml 5 2009-10-16 15:20:39Z dacracot $ -->
+<!DOCTYPE web-app
+     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+<!-- ========================================================== -->
+	<display-name>tox (Tomcat Oracle XML)</display-name>
+<!-- ========================================================== -->
+	<resource-ref>
+		<description>Oracle Datasource</description>
+		<res-ref-name>jdbc/tox</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+	</resource-ref>
+<!-- ========================================================== -->
+	<servlet>
+		<servlet-name>toxServlet</servlet-name>
+		<servlet-class>gov.llnl.tox.toxServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>debugLevel</param-name>
+			<!-- value of verbose will log verbosely -->
+			<!-- anything else will be quiet except for errors -->
+			<param-value>verbose</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>toxServlet</servlet-name>
+		<url-pattern>/do</url-pattern>
+	</servlet-mapping>
+<!-- ========================================================== -->
+</web-app>
