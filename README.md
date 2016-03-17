@@ -68,27 +68,40 @@ dependencies upon Java 1.5.
 Installation
 ------------
 
-Recompile the wars with the "go" shell script after you edit for your
-development environment's configuration. (Note 1)
-	or
+Recompile the wars with the "go" shell script after you edit for your development environment's configuration. (Note 1)
+
+OR
+
 Recompile the wars with ant using the build.xml.
-	and
-Edit your tomcat configuration's server.xml to provide the "jdbc/tox" resource.
-	and
+
+AND
+
+Edit your tomcat configuration's `server.xml` to provide the "jdbc/tox" resource.
+
+AND
+
 Copy the Oracle JDBC jar, ojdbc14.jar, to your tomcat's "common/lib". (Note 2)
-	then
+
+THEN
+
 Run the run the sql scripts in this order... (Note 3)
-	1) tox.usr.sql
-	2) tox.ddl.sql
-	3) tox.pkg.sql
-	4) tox.bdy.sql
-	5) tox.prv.sql
-		and to include the testing functionality...
-	6) ping.usr.sql
-	7) ping.pkg.sql
-	8) ping.bdy.sql
-	9) ping.prv.sql
-	then
+
+```
+tox.usr.sql
+tox.ddl.sql
+tox.pkg.sql
+tox.bdy.sql
+tox.prv.sql
+
+# and to include the testing functionality...
+ping.usr.sql
+ping.pkg.sql
+ping.bdy.sql
+ping.prv.sql
+```
+
+THEN
+
 Open a browser and address http://yourTomcatInstance/test/test.jsp and work
 through the examples using test.jsp, test.js, test.xml, and test.xsl.
 
