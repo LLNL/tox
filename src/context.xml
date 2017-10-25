@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: context.xml 5 2009-10-16 15:20:39Z dacracot $ -->
+<!-- ========================================================== -->
 <Context>
 <!-- ========================================================== -->
-	<ResourceLink name="jdbc/tox" global="jdbc/tox" type="javax.sql.DataSource"/>
+	<!-- STEP 5 -->
+	<!-- Alter the JDBC resource to Oracle for your database. -->
+	<!-- Oracle connection -->
+	<Resource
+		name="jdbc/tox"
+		scope="Shareable"
+		type="javax.sql.DataSource"
+		url="jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"
+		driverClassName="oracle.jdbc.OracleDriver"
+		username="tox"
+		password="t0xb8by"
+		maxIdle="3"
+		maxTotal="10"
+		removeAbandonedOnBorrow="true"
+		removeAbandonedTimeout="60"
+		testOnBorrow="true"
+		validationQuery="select * from dual"
+		logAbandoned="true"
+		/>
+	<!-- Alter the allowed IP patterns for your web clients. -->
+	<!-- Remote address filter -->
+	<Valve
+		className="org.apache.catalina.valves.RemoteAddrValve"
+		allow="127\.0\.0\.1|::1|0:0:0:0:0:0:0:1|10\.251\.99\.191|128\.15\.146\.191|128\.15\.244\.138"
+		/>
 <!-- ========================================================== -->
 </Context>

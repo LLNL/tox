@@ -1,13 +1,14 @@
 set echo on
 spool tox.usr.sql.err
 
--- $Id: tox.usr.sql 5 2009-10-16 15:20:39Z dacracot $
-
 /*------------------------------------------------------------------------*/
 
-CREATE USER tox IDENTIFIED BY toxbaby DEFAULT TABLESPACE data TEMPORARY TABLESPACE temp;
+CREATE USER tox IDENTIFIED BY toxbaby DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp;
 
-GRANT connect, resource TO tox;
+ALTER USER tox QUOTA UNLIMITED ON users; 
+
+GRANT CONNECT TO tox;
+GRANT RESOURCE TO tox;
 
 /*------------------------------------------------------------------------*/
 

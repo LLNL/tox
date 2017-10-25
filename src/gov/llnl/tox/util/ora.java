@@ -22,9 +22,8 @@ public class ora
 	//-----------------------------------------------
 	public void getConn() throws Exception
 		{
-		Context initContext = new InitialContext();
-		Context envContext  = (Context)initContext.lookup("java:/comp/env");
-		DataSource ds = (DataSource)envContext.lookup("jdbc/tox");
+		Context context = (Context)(new InitialContext().lookup("java:comp/env"));
+		DataSource ds = (DataSource)context.lookup("jdbc/tox");
 		conn = ds.getConnection();
 		}
 	//-----------------------------------------------
@@ -99,7 +98,7 @@ public class ora
 					}
 				}
 			}
-		catch(Exception e)
+		catch(SQLException e)
 			{
 			result = debug.logger("gov.llnl.tox.util.ora","error: plsql:prepareCall>> " + call,e);
 			}
