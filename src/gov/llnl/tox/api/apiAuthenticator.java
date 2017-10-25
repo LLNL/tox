@@ -1,4 +1,4 @@
-package gov.llnl.restful.api;
+package gov.llnl.tox.api;
 //---------------------------------------------------
 import java.io.*;
 import java.net.*;
@@ -7,7 +7,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import org.apache.commons.codec.binary.Base64;
 //---------------------------------------------------
-import gov.llnl.restful.util.*;
+import gov.llnl.tox.util.*;
 //----------------------------------------------------
 public class apiAuthenticator extends authenticator
 	{
@@ -36,7 +36,7 @@ public class apiAuthenticator extends authenticator
 			}
 		catch (IOException e)
 			{
-			debug.logger("gov.llnl.restful.authenticator","error: authenticate >> ",e);
+			debug.logger("gov.llnl.tox.authenticator","error: authenticate >> ",e);
 			}
 		StringTokenizer tokenizer = new StringTokenizer(userPass, ":");
 		String user = tokenizer.nextToken();

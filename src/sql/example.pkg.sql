@@ -1,9 +1,7 @@
 set echo on
 spool ping.pkg.sql.err
 
-CREATE OR REPLACE PACKAGE ping IS
-	/*========================================================================*/
--- $Id: ping.pkg.sql 5 2009-10-16 15:20:39Z dacracot $
+CREATE OR REPLACE PACKAGE ping AS
 	/*========================================================================*/
 	/*=======================*/
 		FUNCTION alive

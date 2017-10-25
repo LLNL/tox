@@ -6,8 +6,6 @@ import java.io.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 //----------------------------------------------------
-//-- $Id: xslt.java 5 2009-10-16 15:20:39Z dacracot $
-//----------------------------------------------------
 public class xslt
 	{
 	//-----------------------------------------------

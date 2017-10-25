@@ -1,11 +1,11 @@
-package gov.llnl.restful.api;
+package gov.llnl.tox.api;
 //---------------------------------------------------
 import java.io.*;
 import java.util.*;
 //----------------------------------------------------
 import org.json.*;
 //---------------------------------------------------
-import gov.llnl.restful.util.*;
+import gov.llnl.tox.util.*;
 //----------------------------------------------------
 public class apiVerbage
 	{
@@ -22,7 +22,7 @@ public class apiVerbage
 			}
 		catch (Exception e)
 			{
-			debug.logger("gov.llnl.restful.util.apiVerbage","error: constructor >> ",e);
+			debug.logger("gov.llnl.tox.util.apiVerbage","error: constructor >> ",e);
 			}
 		}
 	//-----------------------------------------------
@@ -145,13 +145,13 @@ public class apiVerbage
 				}
 			catch (IllegalArgumentException e)
 				{
-				result = debug.logger("gov.llnl.restful.util.verbage","no such output type >> "+outputType);
+				result = debug.logger("gov.llnl.tox.util.verbage","no such output type >> "+outputType);
 				}
 			//---------------------------------------
 			}
 		catch (Exception e)
 			{
-			result = debug.logger("gov.llnl.restful.util.verbage","error: api >> ",e);
+			result = debug.logger("gov.llnl.tox.util.verbage","error: api >> ",e);
 			}
 		return(result);
 		}

@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Id: go 7 2010-01-27 22:44:17Z dacracot $
 export WEBAPPS=/Volumes/webdav/WEBAPPS
 echo -----------------------------
 case "$1" in
