@@ -3,7 +3,7 @@ spool ping.usr.sql.err
 
 /*------------------------------------------------------------------------*/
 
-CREATE USER example IDENTIFIED BY examplebaby DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp;
+CREATE USER example IDENTIFIED BY ex8mpleb8by DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp;
 
 ALTER USER example QUOTA UNLIMITED ON users; 
 

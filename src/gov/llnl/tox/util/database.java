@@ -7,13 +7,13 @@ import javax.sql.*;
 //---------------------------------------------------
 import oracle.jdbc.*;
 //----------------------------------------------------
-public class ora
+public class database
 	{
 	private Connection conn;
 	private CallableStatement stmt;
 	private OracleResultSet rset;
 	//-----------------------------------------------
-	public ora()
+	public database()
 		{
 		conn = null;
 		}
@@ -32,7 +32,7 @@ public class ora
 	//------------------------------------------------
 	public String plsql (String call)
 		{
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.ora","plsql(call)>> "+call);
+		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.database","plsql(call)>> "+call);
 		String result = "";
 		try
 			{
@@ -64,7 +64,7 @@ public class ora
 						}
 					catch(Exception e)
 						{
-						result = debug.logger("gov.llnl.tox.util.ora","error: plsql:clean>> ",e);
+						result = debug.logger("gov.llnl.tox.util.database","error: plsql:clean>> ",e);
 						}
 					finally
 						{
@@ -74,14 +74,14 @@ public class ora
 							}
 						catch(Exception e)
 							{
-							debug.logger("gov.llnl.tox.util.ora","error: plsql:finally>> ",e);
+							debug.logger("gov.llnl.tox.util.database","error: plsql:finally>> ",e);
 							}
 						}
 					}
 				}
 			catch(Exception e)
 				{
-				result = debug.logger("gov.llnl.tox.util.ora","error: plsql:execute>> " + call,e);
+				result = debug.logger("gov.llnl.tox.util.database","error: plsql:execute>> " + call,e);
 				}
 			finally
 				{
@@ -92,15 +92,15 @@ public class ora
 					}
 				catch(Exception e)
 					{
-					debug.logger("gov.llnl.tox.util.ora","error: plsql:finally>> ",e);
+					debug.logger("gov.llnl.tox.util.database","error: plsql:finally>> ",e);
 					}
 				}
 			}
 		catch(SQLException e)
 			{
-			result = debug.logger("gov.llnl.tox.util.ora","error: plsql:prepareCall>> " + call,e);
+			result = debug.logger("gov.llnl.tox.util.database","error: plsql:prepareCall>> " + call,e);
 			}
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.ora","plsql(output)>> "+result);
+		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.database","plsql(output)>> "+result);
 		return(result);
 		}
 	//-----------------------------------------------

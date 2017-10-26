@@ -5,6 +5,7 @@ import java.net.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 //---------------------------------------------------
+import gov.llnl.tox.api.*;
 import gov.llnl.tox.util.*;
 //----------------------------------------------------
 public class toxServlet extends HttpServlet
@@ -26,16 +27,59 @@ public class toxServlet extends HttpServlet
 			}
 		}
 	//-----------------------------------------------
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void doVerb(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		toxBean xb = new toxBean(req.getServerName(),req.getServerPort());
-		String[] xml = req.getParameterValues("xml");
-		res.setContentType("text/html");
+		String verb = req.getMethod();
 		PrintWriter out = res.getWriter();
 		//-------------------------------------------
-		out.println(xb.tox(xml[0]));
+		String path = req.getPathInfo().substring(1);
+		String[] execute = path.split("/");
+		apiVerbage v = new apiVerbage(verb);
+		res.setContentType(v.getOutputMIME());
+		out.println(v.api(execute[0],execute[1],req.getParameterMap()));
 		//-------------------------------------------
 		out.close();
+		}
+	//-----------------------------------------------
+	private void notImplemented(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		res.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		}
+	//-----------------------------------------------
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		doVerb(req,res);
+		}
+	//-----------------------------------------------
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		doVerb(req,res);
+		}
+	//-----------------------------------------------
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		doVerb(req,res);
+		}
+	//-----------------------------------------------
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		doVerb(req,res);
+		}
+	//-----------------------------------------------
+	@Override
+	protected void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		notImplemented(req,res);
+		}
+	//-----------------------------------------------
+	@Override
+	protected void doTrace(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+		{
+		notImplemented(req,res);
 		}
 	//-----------------------------------------------
 	private String getPostPayload(HttpServletRequest req)
@@ -72,16 +116,6 @@ public class toxServlet extends HttpServlet
 			return(result);
 			}
 		return(result);
-		}
-	//-----------------------------------------------
-	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-		{
-		toxBean xb = new toxBean(req.getServerName(),req.getServerPort());
-		res.setContentType("text/html");
-		PrintWriter out = res.getWriter();
-		//-------------------------------------------
-		out.println(xb.tox(getPostPayload(req)));
-		out.close();
 		}
 	//-----------------------------------------------
 	}
