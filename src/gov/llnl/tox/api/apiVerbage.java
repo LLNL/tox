@@ -66,6 +66,7 @@ public class apiVerbage
 		{
 		String result = "";
 		String outputType = "XML";
+		String xslUrl = "";
 		Map<String, String[]> params = new HashMap<>(lockedParams);
 		try
 			{
@@ -91,6 +92,13 @@ public class apiVerbage
 						outputType = params.get("outputType")[0];
 						keys.remove("outputType");
 						params.remove("outputType");
+						}
+					// deal with xform param if it exists
+					if (keys.contains("xform"))
+						{
+						xslUrl = params.get("xform")[0];
+						keys.remove("xform");
+						params.remove("xform");
 						}
 					// add params to pl/sql call
 					int paramCount = keys.size();
@@ -128,6 +136,12 @@ public class apiVerbage
 					case XML:
 						{
 						// already in XML format
+						if (!xslUrl.equals(""))
+							{
+Vector<String> xsltParams = new Vector<String>();
+							xslt xform = new xslt();
+							result = xform.morph(result,xslUrl,xsltParams);
+							}
 						break;
 						}
 					case JSON:
