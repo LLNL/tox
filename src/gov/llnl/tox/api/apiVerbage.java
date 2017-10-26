@@ -138,7 +138,9 @@ public class apiVerbage
 						// already in XML format
 						if (!xslUrl.equals(""))
 							{
-Vector<String> xsltParams = new Vector<String>();
+							// TO DO: need a way to pass params to XSLT that
+							// is not confused with passing params to PL/SQL
+							Vector<String> xsltParams = new Vector<String>();
 							xslt xform = new xslt();
 							result = xform.morph(result,xslUrl,xsltParams);
 							}
