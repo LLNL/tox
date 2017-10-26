@@ -2,6 +2,8 @@
 <!-- ========================================================== -->
 <Context>
 <!-- ========================================================== -->
+	<!-- STEP 5 -->
+	<!-- Alter the JDBC resource to Oracle for your database. -->
 	<!-- Oracle connection -->
 	<Resource
 		name="jdbc/tox"
@@ -19,6 +21,7 @@
 		validationQuery="select * from dual"
 		logAbandoned="true"
 		/>
+	<!-- STEP 6 -->
 	<!-- Alter the allowed IP patterns for your web clients. -->
 	<!-- Remote address filter -->
 	<Valve

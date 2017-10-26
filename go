@@ -1,5 +1,8 @@
 #!/bin/bash
 # --------------------------------
+# STEP 7
+# Set your base directory for the location of Tomcat.
+# --------------------------------
 if [ -z "$WHEREAMI" ]; then
     pushd .. > /dev/null
     export WHEREAMI=$PWD
