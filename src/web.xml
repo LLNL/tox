@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: web.xml 5 2009-10-16 15:20:39Z dacracot $ -->
+<!-- ========================================================== -->
 <!DOCTYPE web-app
      PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
 <!-- ========================================================== -->
 	<display-name>tox (Tomcat Oracle XML)</display-name>
-<!-- ========================================================== -->
-	<resource-ref>
-		<description>Oracle Datasource</description>
-		<res-ref-name>jdbc/tox</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-	</resource-ref>
 <!-- ========================================================== -->
 	<servlet>
 		<servlet-name>toxServlet</servlet-name>
@@ -26,7 +20,22 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>toxServlet</servlet-name>
-		<url-pattern>/do</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+<!-- ========================================================== -->
+	<filter>
+		<filter-name>apiFilter</filter-name>
+		<filter-class>gov.llnl.tox.apiFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>apiFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+<!-- ========================================================== -->
+	<resource-env-ref>
+		<description>Oracle Datasource</description>
+		<resource-env-ref-name>jdbc/tox</resource-env-ref-name>
+		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
 <!-- ========================================================== -->
 </web-app>

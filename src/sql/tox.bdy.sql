@@ -1,13 +1,9 @@
 set echo on
+set define off
 spool tox.bdy.sql.err
 
--- $Id: tox.bdy.sql 5 2009-10-16 15:20:39Z dacracot $
-
 CREATE OR REPLACE PACKAGE BODY tox
-	IS
-	/*------------------------------------------------------------------------*/
-	/*------------------------------------------------------------------------*/
-	/*========================================================================*/
+	AS
 	/*========================================================================*/
 	PROCEDURE begin_spool
 		AS
@@ -99,6 +95,30 @@ CREATE OR REPLACE PACKAGE BODY tox
 			RETURN v_result;
 		/*=======================*/
 		END timestamp;
+	/*========================================================================*/
+	FUNCTION encode
+		(
+		in_original IN VARCHAR2
+		)
+		RETURN VARCHAR2
+		AS
+		/*-----------------------*/
+		v_result VARCHAR2(2048);
+		/*=======================*/
+		BEGIN
+		/*=======================*/
+		IF (in_original IS NOT NULL) THEN
+			v_result:= REPLACE(in_original,'&','&amp;');
+			v_result:= REPLACE(v_result,'"','&quot;');
+			v_result:= REPLACE(v_result,'<','&lt;');
+			v_result:= REPLACE(v_result,'>','&gt;');
+		ELSE
+			v_result:= NULL;
+		END IF;
+		/*-----------------------*/
+		RETURN v_result;
+		/*=======================*/
+		END encode;
 	/*========================================================================*/
 	END tox;
 	/*========================================================================*/
