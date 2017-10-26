@@ -1,0 +1,11 @@
+#!/bin/bash
+echo -----------------------------
+curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/alive" > test1.html
+curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/formatted?in_mask=YYYYMMDD" > test2.html
+curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/formatted?in_mask=YYYYMMDD&outputType=XML" > test2.html
+curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/formatted?in_mask=YYYYMMDD&outputType=XML&xform=src/xslt/test.xsl" > test3.html
+curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/formatted?in_mask=YYYYMMDD&xform=src/xslt/test.xsl" > test4.html
+curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/formatted?in_mask=YYYYMMDD&outputType=JSON" > test5.html
+open -a Firefox test1.html test2.html test3.html test4.html test5.html
+echo -----------------------------
+# what about put and post, what is the payload?

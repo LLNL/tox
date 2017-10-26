@@ -1,9 +1,7 @@
 set echo on
 spool tox.pkg.sql.err
 
-CREATE OR REPLACE PACKAGE tox IS
-	/*========================================================================*/
--- $Id: tox.pkg.sql 5 2009-10-16 15:20:39Z dacracot $
+CREATE OR REPLACE PACKAGE tox AS
 	/*========================================================================*/
 		g_spool_key spool.key%TYPE := NULL;
 		TYPE t_spool IS REF CURSOR RETURN spool%ROWTYPE;
@@ -22,6 +20,12 @@ CREATE OR REPLACE PACKAGE tox IS
 	/*=======================*/
 		FUNCTION timestamp
 			RETURN VARCHAR2;
+	/*=======================*/
+	FUNCTION encode
+		(
+		in_original IN VARCHAR2
+		)
+		RETURN VARCHAR2;
 	/*=======================*/
 	END tox;
 	/*========================================================================*/

@@ -1,5 +1,4 @@
 <!-- ======================================================================= -->
-<!-- $Id: build.xml 13 2010-10-13 17:54:42Z dacracot $ -->
 <project name="tox" default="main" basedir="./">
 	<!-- =================================================================== -->
 	<!-- get enviroment from OS -->
@@ -9,9 +8,10 @@
 	<!-- set misc properties -->
 	<!-- =================================================================== -->
 	<buildnumber file="build.number"/>
-	<property name="name" value="tox"/> 
-	<property name="version" value="1.6.1"/>
-	<property name="JDK" value="1.5"/>
+	<property name="name" value="tox"/>
+	<property name="version" value="2.0"/>
+	<property name="JDK" value="1.8"/>
+	<property name="db.login" value="example/examplebaby@vm3"/>
 	<!-- =================================================================== -->
 	<!-- clean everything -->
 	<!-- =================================================================== -->
@@ -20,11 +20,43 @@
 		<delete dir="tmp"/>
 		<delete dir="deploy"/>
 		<delete>
-			<fileset dir="./" includes="src/*.sql.err"/>
+			<fileset dir="./" includes="src/sql/*.sql.err"/>
 			<fileset dir="./" includes="*.out"/>
 			<fileset dir="./" includes="*.err"/>
 		</delete>
 		<echo message="clean --------------------------------------"/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- load plsql -->
+	<!-- =================================================================== -->
+	<target name="compile.plsql" description="compile plsql">
+		<echo message="compile.plsql ------------------------"/>
+		<mkdir dir="tmp/log"/>
+		<exec dir="src/sql" executable="sqlplus" failonerror="true" output="src/sql/api.all.sql.err">
+			<arg value="${db.login}"/>
+			<arg value="@api.all.sql"/>
+		</exec>
+		<echo message="looking for plsql errors -------------------"/>
+		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
+			<arg value="LINE/COL ERROR"/>
+			<arg value="api.all.sql.err"/>
+		</exec>
+		<fail message="plsql compile errors">
+			<condition>
+				<equals arg1="${found}" arg2="0"/>
+			</condition>
+		</fail>
+		<echo message="looking for line item errors ---------------"/>
+		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
+			<arg value="ERROR at"/>
+			<arg value="api.all.sql.err"/>
+		</exec>
+		<fail message="sql compile errors">
+			<condition>
+				<equals arg1="${found}" arg2="0"/>
+			</condition>
+		</fail>
+		<echo message="compile.plsql ------------------------"/>
 	</target>
 	<!-- =================================================================== -->
 	<!-- compile java -->
@@ -33,18 +65,18 @@
 		<echo message="compile.java ---------------------------"/>
 		<path id="classpath">
 			<pathelement location="lib/saxon9.jar"/>
-			<pathelement location="lib/servlet.jar"/>
-			<pathelement location="lib/commons-httpclient-3.1.jar"/>
-			<pathelement location="lib/orai18n.jar"/>
-			<pathelement location="lib/ojdbc14.jar"/>
+			<pathelement location="lib/json.jar"/>
+			<pathelement location="lib/servlet-api.jar"/>
+			<pathelement location="lib/ojdbc8.jar"/>
+			<pathelement location="lib/commons-codec-1.10.jar"/>
 		</path>
 		<mkdir dir="tmp/classes"/>
-		<javac source="${JDK}" target="${JDK}" srcdir="src" destdir="tmp/classes" debug="on" deprecation="on" optimize="on">
+		<javac source="${JDK}" target="${JDK}" srcdir="src" destdir="tmp/classes" debug="on" deprecation="on" optimize="on" includeAntRuntime="false">
 			<classpath refid="classpath"/>
 			<compilerarg value="-Xlint"/>
 		</javac>
 		<manifest file="tmp/MANIFEST.MF">
-			<attribute name="Built-By" value="David Craig Cothren"/>
+			<attribute name="Built-By" value="${env.USER}"/>
 			<attribute name="Implementation-Version" value="${version} build ${build.number}"/>
 		</manifest>
 		<jar jarfile="tmp/tox.jar" basedir="tmp/classes" manifest="tmp/MANIFEST.MF"/>
@@ -56,18 +88,27 @@
 	<target name="load.war" depends="clean, compile.java" description="move everything to the web archive">
 		<echo message="load.war -----------------------------------"/>
 		<mkdir dir="tmp/tox"/>
-		<mkdir dir="tmp/tox/dtd"/>
 		<copy todir="tmp/tox/META-INF">
 			<fileset dir="src">
 				<include name="context.xml"/>
 			</fileset>
 		</copy>
+		<filter token="VERSION" value="${version} build ${build.number}"/>
+		<tstamp>
+			<format property="when" pattern="yyyy-MM-dd HH:mm:ss"/>
+		</tstamp>
+		<filter token="WHEN" value="${when}"/>
+		<copy todir=".">
+			<fileset dir="tmp">
+				<include name="tox.jar"/>
+			</fileset>
+		</copy>
 		<copy todir="tmp/tox/WEB-INF/lib">
 			<fileset dir="lib">
-				<include name="saxon9.jar"/>
-				<include name="orai18n.jar"/>
-				<include name="commons-logging-1.1.1.jar"/>
-				<include name="commons-httpclient-3.1.jar"/>
+				<include name="json.jar"/>
+				<include name="ojdbc8.jar"/>
+				<include name="commons-logging-1.2.jar"/>
+				<include name="commons-codec-1.10.jar"/>
 			</fileset>
 			<fileset dir="tmp">
 				<include name="tox.jar"/>
@@ -78,60 +119,18 @@
 				<include name="logging.properties"/>
 			</fileset>
 		</copy>
-		<copy todir="tmp/tox/dtd" flatten="yes">
-			<fileset dir="src">
-				<include name="*.dtd"/>
-			</fileset>
-		</copy>
 		<war warfile="tox.war" webxml="src/web.xml" manifest="tmp/MANIFEST.MF">
 			<fileset dir="tmp/tox"/>
 		</war>
 		<echo message="load.war -----------------------------------"/>
 	</target>
 	<!-- =================================================================== -->
-	<!-- load test war -->
-	<!-- =================================================================== -->
-	<target name="load.test.war" description="move everything to the web archive">
-		<echo message="load.test.war ------------------------------"/>
-		<mkdir dir="tmp/test"/>
-		<copy todir="tmp/test/WEB-INF/lib">
-			<fileset dir="lib">
-				<include name="commons-httpclient-3.1.jar"/>
-				<include name="commons-codec-1.3.jar"/>
-			</fileset>
-			<fileset dir=".">
-				<include name="tox.jar"/>
-			</fileset>
-		</copy>
-		<copy todir="tmp/test/WEB-INF">
-			<fileset dir="src">
-				<include name="tox.tld"/>
-			</fileset>
-		</copy>
-		<filter token="TEST_HOST" value="${test.host}"/>
-		<filter token="TEST_PORT" value="${test.port}"/>
-		<copy todir="tmp/test" flatten="yes" filtering="true">
-			<fileset dir="src">
-				<include name="*.js"/>
-				<include name="*.jsp"/>
-				<include name="*.xsl"/>
-				<include name="*.html"/>
-				<include name="*.xml"/>
-				<include name="*.css"/>
-				<exclude name="test-web.xml"/>
-				<exclude name="context.xml"/>
-				<exclude name="web.xml"/>
-			</fileset>
-		</copy>
-		<war warfile="test.war" webxml="src/test-web.xml">
-			<fileset dir="tmp/test"/>
-		</war>
-		<echo message="load.test.war ------------------------------"/>
-	</target>
-	<!-- =================================================================== -->
 	<!-- default -->
 	<!-- =================================================================== -->
-	<target name="main" depends="load.war, load.test.war" description="default">
+<!-- DYLD_LIBRARY_PATH missing from env, so sqlplus fails
+	<target name="main" depends="clean, compile.plsql, load.war" description="default">
+-->
+	<target name="main" depends="clean, load.war" description="default">
 	</target>
 	<!-- =================================================================== -->
 </project>

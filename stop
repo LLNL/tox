@@ -1,0 +1,15 @@
+#!/bin/bash
+# --------------------------------
+if [ -z "$WHEREAMI" ]; then
+    pushd .. > /dev/null
+    export WHEREAMI=$PWD
+    popd > /dev/null
+fi
+# --------------------------------
+export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
+export TOMCAT_HOME=$WHEREAMI/tomcat
+echo -----------------------------
+say "stopping"
+$TOMCAT_HOME/bin/shutdown.sh
+say "stopped"
+echo -----------------------------

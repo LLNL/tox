@@ -1,64 +1,45 @@
 #!/bin/bash
-# $Id: go 7 2010-01-27 22:44:17Z dacracot $
-export WEBAPPS=/Volumes/webdav/WEBAPPS
+# --------------------------------
+# STEP 7
+# Set your base directory for the location of Tomcat.
+# --------------------------------
+if [ -z "$WHEREAMI" ]; then
+    pushd .. > /dev/null
+    export WHEREAMI=$PWD
+    popd > /dev/null
+fi
+# --------------------------------
+export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
+export TOMCAT_HOME=$WHEREAMI/tomcat
+export WEBAPPS=$TOMCAT_HOME/webapps
+export JAVA_OPTS=
+export CATALINA_OPTS="-Doracle.jdbc.autoCommitSpecCompliant=false"
 echo -----------------------------
+say "go"
 case "$1" in
 	'-?'|'-help'|'--help')
 		echo "usage: go"
-		echo "       compile and deploy tox only"
-		echo "usage: go -t <host> <port>"
-		echo "       deploy the simple test application only"
-		echo "usage: go -b <host> <port>"
-		echo "       deploy both tox and the simple test application"
+		echo "       compile and deploy tox"
 		echo -----------------------------
 		;;
-	'-t')
-		ant -Dtest.host=$2 -Dtest.port=$3 load.test.war
-		if [ $? = 0 ] ; then
-			echo -----------------------------
-			ant clean
-			echo -----------------------------
-			rm -frv $WEBAPPS/test*
-			echo -----------------------------
-			cp -v test.war $WEBAPPS
-			echo -----------------------------
-			say "The build of the test application was successful."
-		else
-			say "The build failed."
-		fi
-		;;
-	'-b')
-		ant -Dtest.host=$2 -Dtest.port=$3
-		if [ $? = 0 ] ; then
-			echo -----------------------------
-			cp -v tmp/tox.jar .
-			echo -----------------------------
-			ant clean
-			echo -----------------------------
-			rm -frv $WEBAPPS/tox* $WEBAPPS/test*
-			echo -----------------------------
-			cp -v tox.war test.war $WEBAPPS
-			echo -----------------------------
-			say "The build of both tox and the test application was successful."
-		else
-			say "The build failed."
-		fi
-		;;
 	*)
-		ant load.war
+		ant
 		if [ $? = 0 ] ; then
-			echo -----------------------------
-			cp -v tmp/tox.jar .
 			echo -----------------------------
 			ant clean
 			echo -----------------------------
-			rm -frv $WEBAPPS/tox*
+			$TOMCAT_HOME/bin/shutdown.sh
+			rm -fr $WEBAPPS/tox*
 			echo -----------------------------
 			cp -v tox.war $WEBAPPS
+			$TOMCAT_HOME/bin/startup.sh
+			sleep 2
 			echo -----------------------------
-			say "The build of tox was successful."
+			unitTest
+			echo -----------------------------
+			say "success"
 		else
-			say "The build failed."
+			say "fail"
 		fi
 		;;
 esac
