@@ -17,6 +17,9 @@ public class apiFilter implements Filter
 		//-------------------------------------------
 		}
 	//-----------------------------------------------
+	// NEXT STEP 2
+	// Call your authenticate method.
+	//-----------------------------------------------
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws ServletException, IOException
 		{
