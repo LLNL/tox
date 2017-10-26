@@ -1,7 +1,7 @@
 set echo on
-spool ping.pkg.sql.err
+spool get.pkg.sql.err
 
-CREATE OR REPLACE PACKAGE ping AS
+CREATE OR REPLACE PACKAGE get AS
 	/*========================================================================*/
 	/*=======================*/
 		FUNCTION alive
@@ -13,12 +13,12 @@ CREATE OR REPLACE PACKAGE ping AS
 			)
 			RETURN SYS_REFCURSOR;
 	/*=======================*/
-	END ping;
+	END get;
 	/*========================================================================*/
 
 /
 
-SHOW ERRORS PACKAGE ping;
+SHOW ERRORS PACKAGE get;
 
 /*------------------------------------------------------------------------*/
 

@@ -1,15 +1,10 @@
 #!/bin/bash
-# --------------------------------
-# time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/getTest?partNo=1234567-123&startDate=07/10/2016&endDate=07/20/2016"
-# time curl -X POST -u tester:testerpass "http://localhost:8080/restful/getTest?partNo=1234567-234&startDate=07/10/2016&endDate=07/20/2016"
-# time curl -X PUT -u tester:testerpass "http://localhost:8080/restful/getTest?partNo=1234567-324&startDate=07/10/2016&endDate=07/20/2016"
-# time curl -X DELETE -u tester:testerpass "http://localhost:8080/restful/getTest?partNo=1234567-421&startDate=07/10/2016&endDate=07/20/2016"
-# --------------------------------
 echo -----------------------------
-time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/department"
-time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/departmentByNo?deptNo=10"
-time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/departmentByName?dname=SALES"
-time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/departmentByLoc?loc=BOSTON"
+time curl -X GET  -u tester:testerpass "http://localhost:8080/tox/example/alive" > test1.html
+open -a Firefox test1.html
+# time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/departmentByNo?deptNo=10"
+# time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/departmentByName?dname=SALES"
+# time curl -X GET  -u tester:testerpass "http://localhost:8080/restful/scott/departmentByLoc?loc=BOSTON"
 echo -----------------------------
 
 

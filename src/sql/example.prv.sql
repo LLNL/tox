@@ -1,9 +1,9 @@
 set echo on
-spool ping.prv.sql.err
+spool example.prv.sql.err
 
 /*------------------------------------------------------------------------*/
 
-GRANT EXECUTE ON ping TO tox;
+GRANT EXECUTE ON get TO tox;
 
 /*------------------------------------------------------------------------*/
 
