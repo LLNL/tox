@@ -12,7 +12,7 @@
 		url="jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"
 		driverClassName="oracle.jdbc.OracleDriver"
 		username="tox"
-		password="toxbaby"
+		password="t0xb8by"
 		maxIdle="3"
 		maxTotal="10"
 		removeAbandonedOnBorrow="true"
