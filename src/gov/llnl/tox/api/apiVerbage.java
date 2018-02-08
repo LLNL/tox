@@ -67,12 +67,14 @@ public class apiVerbage
 			if (paramCount != 0)
 				{
 				if (!payload.isEmpty())
-					buf.append("('"+payload+",");
+					buf.append("(in_payload=>'"+payload+"',");
 				else
-					buf.append("('");
+					buf.append("(");
 				int i = 1;
 				for (String key: keys)
 					{
+					buf.append(key);
+					buf.append("=>'");
 					buf.append(params.get(key)[0]);
 					if (i < paramCount)
 						buf.append("','");
@@ -83,7 +85,7 @@ public class apiVerbage
 			else
 				{
 				if (!payload.isEmpty())
-					buf.append("('"+payload+"')");
+					buf.append("(in_payload=>'"+payload+"')");
 				}
 			result = db.plsql(buf.toString());
 			db.releaseConn();
