@@ -10,6 +10,6 @@ export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
 export TOMCAT_HOME=$WHEREAMI/tomcat
 echo -----------------------------
 say "stopping"
-$TOMCAT_HOME/bin/shutdown.sh
+"$TOMCAT_HOME/bin/shutdown.sh"
 say "stopped"
 echo -----------------------------

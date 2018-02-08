@@ -9,7 +9,7 @@
 	<!-- =================================================================== -->
 	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
-	<property name="version" value="2.0"/>
+	<property name="version" value="2.1"/>
 	<property name="JDK" value="1.8"/>
 	<property name="db.login" value="example/examplebaby@vm3"/>
 	<!-- =================================================================== -->
