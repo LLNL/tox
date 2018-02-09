@@ -77,7 +77,7 @@ public class apiVerbage
 					buf.append("=>'");
 					buf.append(params.get(key)[0]);
 					if (i < paramCount)
-						buf.append("','");
+						buf.append("',");
 					i++;
 					}
 				buf.append("')");

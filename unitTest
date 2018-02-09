@@ -1,11 +1,21 @@
 #!/bin/bash
-echo -----------------------------
+echo --  no parameters -----------------------------
 curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.alive" > test1.html
+echo --  1 parameter -------------------------------
 curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD" > test2.html
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputType=XML" > test2.html
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputType=XML&xform=src/xslt/test.xsl" > test3.html
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&xform=src/xslt/test.xsl" > test4.html
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputType=JSON" > test5.html
-curl -X POST -d "<root><date>19690720</date></root>" -u tester:testerpass "http://localhost:8080/tox/example.test.echo" > test6.html
-bbedit test1.html test2.html test3.html test4.html test5.html test6.html
+echo --  3 parameters ------------------------------
+curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_maskIn=mm/dd/yyyy&in_date=07/17/1961&in_maskOut=YYYYMMDD" > test3.html
+echo --  1 parameter, XML output -------------------
+curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputType=XML" > test4.html
+echo --  1 parameter, XML output, XSL transform ----
+curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputType=XML&xform=src/xslt/test.xsl" > test5.html
+echo --  1 parameter, XSL transform ----------------
+curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&xform=src/xslt/test.xsl" > test6.html
+echo --  1 parameter, JSON output ------------------
+curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputType=JSON" > test7.html
+echo --  no parameters, POST payload ---------------
+curl -X POST -d "<root><date>19690720</date></root>" -u tester:testerpass "http://localhost:8080/tox/example.test.echo" > test8.html
+echo --  no parameters, POST payload, JSON output --
+curl -X POST -d "<root><date>19690720</date></root>" -u tester:testerpass "http://localhost:8080/tox/example.test.echo?outputType=JSON" > test9.html
+bbedit test*.html
 echo -----------------------------
