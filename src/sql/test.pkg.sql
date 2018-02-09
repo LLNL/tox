@@ -1,7 +1,7 @@
 set echo on
-spool get.pkg.sql.err
+spool test.pkg.sql.err
 
-CREATE OR REPLACE PACKAGE get AS
+CREATE OR REPLACE PACKAGE test AS
 	/*========================================================================*/
 	/*=======================*/
 		FUNCTION alive
@@ -13,12 +13,26 @@ CREATE OR REPLACE PACKAGE get AS
 			)
 			RETURN SYS_REFCURSOR;
 	/*=======================*/
-	END get;
+		FUNCTION formatted
+			(
+			in_maskIn IN VARCHAR2,
+			in_date IN VARCHAR2,
+			in_maskOut IN VARCHAR2
+			)
+			RETURN SYS_REFCURSOR;
+	/*=======================*/
+		FUNCTION echo
+			(
+			in_payload IN VARCHAR2
+			)
+			RETURN SYS_REFCURSOR;
+	/*=======================*/
+	END test;
 	/*========================================================================*/
 
 /
 
-SHOW ERRORS PACKAGE get;
+SHOW ERRORS PACKAGE test;
 
 /*------------------------------------------------------------------------*/
 

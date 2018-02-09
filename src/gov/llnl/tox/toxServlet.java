@@ -29,14 +29,13 @@ public class toxServlet extends HttpServlet
 	//-----------------------------------------------
 	private void doVerb(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		String verb = req.getMethod();
 		PrintWriter out = res.getWriter();
 		//-------------------------------------------
-		String path = req.getPathInfo().substring(1);
-		String[] execute = path.split("/");
-		apiVerbage v = new apiVerbage(verb);
+		String execute = req.getPathInfo().substring(1);
+		apiVerbage v = new apiVerbage();
 		res.setContentType(v.getOutputMIME());
-		out.println(v.api(execute[0],execute[1],req.getParameterMap()));
+		String p = getPostPayload(req);
+		out.println(v.api(execute,req.getParameterMap(),p));
 		//-------------------------------------------
 		out.close();
 		}
@@ -61,13 +60,13 @@ public class toxServlet extends HttpServlet
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		doVerb(req,res);
+		notImplemented(req,res);
 		}
 	//-----------------------------------------------
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		doVerb(req,res);
+		notImplemented(req,res);
 		}
 	//-----------------------------------------------
 	@Override

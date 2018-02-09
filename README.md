@@ -14,11 +14,15 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.0 of tox.
+This is version 2.1 of tox.
 
 Change History
 --------------
   
+Version 2.1:
+
+1. Removed HTTP verb from PL/SQL call verbage.
+
 Version 2.0:
 
 1. Modernized for Java 8.

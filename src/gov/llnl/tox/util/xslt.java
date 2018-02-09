@@ -23,7 +23,7 @@ public class xslt
 			}
 		}
 	//-----------------------------------------------
-	public String morph(String xml, String xslUrl, Vector params)
+	public String morph(String xml, String xslUrl, Vector<String> params)
 		{
 		String output;
 		ByteArrayInputStream xmlStream;
