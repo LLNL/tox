@@ -93,20 +93,23 @@ public class apiVerbage
 			outputs output = null;
 			try
 				{
+				// transform first if asked
+				// output depends on the result
+				if (!xslUrl.equals(""))
+					{
+					// TO DO: need a way to pass params to XSLT that
+					// is not confused with passing params to PL/SQL
+					Vector<String> xsltParams = new Vector<String>();
+					xslt xform = new xslt();
+					result = xform.morph(result,xslUrl,xsltParams);
+					}
+				//-----------------------------------
 				output = outputs.valueOf(outputType.toUpperCase());
 				switch (output)
 					{
 					case XML:
 						{
-						// already in XML format
-						if (!xslUrl.equals(""))
-							{
-							// TO DO: need a way to pass params to XSLT that
-							// is not confused with passing params to PL/SQL
-							Vector<String> xsltParams = new Vector<String>();
-							xslt xform = new xslt();
-							result = xform.morph(result,xslUrl,xsltParams);
-							}
+						// XML format is the default
 						break;
 						}
 					case JSON:
