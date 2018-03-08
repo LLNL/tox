@@ -1,5 +1,4 @@
 set echo on
-spool tox.pkg.sql.err
 
 CREATE OR REPLACE PACKAGE tox AS
 	/*========================================================================*/
@@ -36,4 +35,3 @@ SHOW ERRORS PACKAGE tox;
 
 /*------------------------------------------------------------------------*/
 
-spool off

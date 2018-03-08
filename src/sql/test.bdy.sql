@@ -1,5 +1,4 @@
 set echo on
-spool test.bdy.sql.err
 set define off
 
 CREATE OR REPLACE PACKAGE BODY test
@@ -165,4 +164,3 @@ SHOW ERRORS PACKAGE BODY test;
 
 /*------------------------------------------------------------------------*/
 
-spool off
