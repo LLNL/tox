@@ -11,7 +11,7 @@
 	<property name="name" value="tox"/>
 	<property name="version" value="2.1"/>
 	<property name="JDK" value="1.8"/>
-	<property name="db.login" value="example/examplebaby@vm3"/>
+	<property name="db.login" value="tox/t0xb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
 	<!-- =================================================================== -->
 	<!-- clean everything -->
 	<!-- =================================================================== -->
@@ -32,14 +32,14 @@
 	<target name="compile.plsql" description="compile plsql">
 		<echo message="compile.plsql ------------------------"/>
 		<mkdir dir="tmp/log"/>
-		<exec dir="src/sql" executable="sqlplus" failonerror="true" output="src/sql/api.all.sql.err">
+		<exec dir="src/sql" executable="sql" failonerror="true" output="src/sql/tox.all.sql.err">
 			<arg value="${db.login}"/>
-			<arg value="@api.all.sql"/>
+			<arg value="@tox.all.sql"/>
 		</exec>
 		<echo message="looking for plsql errors -------------------"/>
 		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
 			<arg value="LINE/COL ERROR"/>
-			<arg value="api.all.sql.err"/>
+			<arg value="tox.all.sql.err"/>
 		</exec>
 		<fail message="plsql compile errors">
 			<condition>
@@ -49,7 +49,7 @@
 		<echo message="looking for line item errors ---------------"/>
 		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
 			<arg value="ERROR at"/>
-			<arg value="api.all.sql.err"/>
+			<arg value="tox.all.sql.err"/>
 		</exec>
 		<fail message="sql compile errors">
 			<condition>
@@ -127,10 +127,7 @@
 	<!-- =================================================================== -->
 	<!-- default -->
 	<!-- =================================================================== -->
-<!-- DYLD_LIBRARY_PATH missing from env, so sqlplus fails
 	<target name="main" depends="clean, compile.plsql, load.war" description="default">
--->
-	<target name="main" depends="clean, load.war" description="default">
 	</target>
 	<!-- =================================================================== -->
 </project>
