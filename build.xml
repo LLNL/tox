@@ -144,6 +144,7 @@
 		</copy>
 		<copy todir="tmp/tox/WEB-INF/lib">
 			<fileset dir="lib">
+				<include name="saxon9.jar"/>
 				<include name="json.jar"/>
 				<include name="ojdbc8.jar"/>
 				<include name="commons-logging-1.2.jar"/>

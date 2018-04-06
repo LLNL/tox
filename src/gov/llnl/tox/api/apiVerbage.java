@@ -34,35 +34,54 @@ public class apiVerbage
 	public String getOutputMIME()
 		{
 		return("application/json");
+// not always JSON
 		}
 	//-----------------------------------------------
 	public String api(String call, Map<String, String[]> lockedParams, String payload)
 		{
 		String result = "";
-		String outputType = "XML";
-		String xslUrl = "";
+		String inputType = "XML"; // default is XML
+		String inputXslUrl = "";
+		String outputType = "XML"; // default is XML
+		String outputXslUrl = "";
 		Map<String, String[]> params = new HashMap<>(lockedParams);
 		try
 			{
-			db.getConn();
-			StringBuffer buf = new StringBuffer(call);
-			// params appear to be in order of the query string
+			// params from the query string
 			Set<String> keys = params.keySet();
-			// deal with outputType param if it exists
+			// deal with inputType param if it exists
+			if (keys.contains("inputType"))
+				{
+				inputType = params.get("inputType")[0];
+				keys.remove("inputType");
+				params.remove("inputType");
+// change to XML if not already
+				}
+			// deal with inputXform param if it exists
+			if (keys.contains("inputXform"))
+				{
+				inputXslUrl = params.get("inputXform")[0];
+				keys.remove("inputXform");
+				params.remove("inputXform");
+// apply XSLT
+				}
+			// deal with outputType param if it exists (after DB call)
 			if (keys.contains("outputType"))
 				{
 				outputType = params.get("outputType")[0];
 				keys.remove("outputType");
 				params.remove("outputType");
 				}
-			// deal with xform param if it exists
-			if (keys.contains("xform"))
+			// deal with outputXform param if it exists (after DB call)
+			if (keys.contains("outputXform"))
 				{
-				xslUrl = params.get("xform")[0];
-				keys.remove("xform");
-				params.remove("xform");
+				outputXslUrl = params.get("outputXform")[0];
+				keys.remove("outputXform");
+				params.remove("outputXform");
 				}
 			// add params to pl/sql call
+			db.getConn();
+			StringBuffer buf = new StringBuffer(call);
 			int paramCount = keys.size();
 			if (paramCount != 0)
 				{
@@ -95,13 +114,13 @@ public class apiVerbage
 				{
 				// transform first if asked
 				// output depends on the result
-				if (!xslUrl.equals(""))
+				if (!outputXslUrl.equals(""))
 					{
 					// TO DO: need a way to pass params to XSLT that
 					// is not confused with passing params to PL/SQL
 					Vector<String> xsltParams = new Vector<String>();
 					xslt xform = new xslt();
-					result = xform.morph(result,xslUrl,xsltParams);
+					result = xform.morph(result,outputXslUrl,xsltParams);
 					}
 				//-----------------------------------
 				output = outputs.valueOf(outputType.toUpperCase());
