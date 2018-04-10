@@ -24,6 +24,7 @@ public class apiVerbage
 			}
 		}
 	//-----------------------------------------------
+// not always out
 	private enum outputs
 		{
 		JSON,
