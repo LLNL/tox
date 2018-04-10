@@ -37,20 +37,20 @@ public class apiVerbage
 // not always JSON
 		}
 	//-----------------------------------------------
-	public String api(String call, Map<String, String[]> lockedParams, String payload)
+	public String api(String call, Map<String, String[]> queryParams, String payload)
 		{
 		String result = "";
 		String inputType = "XML"; // default is XML
 		String inputXslUrl = "";
 		String outputType = "XML"; // default is XML
 		String outputXslUrl = "";
-		Map<String, String[]> params = new HashMap<>(lockedParams);
+		Map<String, String[]> params = new HashMap<>(queryParams);
 		try
 			{
 			// params from the query string
 			Set<String> keys = params.keySet();
 			// deal with inputType param if it exists
-			if (keys.contains("inputType"))
+			if (keys.contains("inputType")
 				{
 				inputType = params.get("inputType")[0];
 				keys.remove("inputType");
