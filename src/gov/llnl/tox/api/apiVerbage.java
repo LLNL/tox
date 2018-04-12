@@ -24,54 +24,94 @@ public class apiVerbage
 			}
 		}
 	//-----------------------------------------------
-// not always out
-	private enum outputs
+	private enum formats
 		{
 		JSON,
-		XML,
-		CSV
+		XML
 		}
 	//-----------------------------------------------
-	public String getOutputMIME()
+	public String getOutputMIME(Map<String, String[]> urlParams)
 		{
-		return("application/json");
-// not always JSON
+		Map<String, String[]> params = new HashMap<>(urlParams);
+		Set<String> keys = params.keySet();
+		if (keys.contains("outputFormat"))
+			{
+			String outputFormat = params.get("outputFormat")[0];
+			formats format = formats.valueOf(outputFormat.toUpperCase());
+			switch (format)
+				{
+				case XML:
+					{
+					return("text/xml"); 
+					}
+				case JSON:
+					{
+					return("application/json"); 
+					}
+				default:
+					{
+					return("text/plain");
+					}
+				}
+			}
+		else
+			return("text/xml"); // default is XML
 		}
 	//-----------------------------------------------
-	public String api(String call, Map<String, String[]> queryParams, String payload)
+	public String api(String call, Map<String, String[]> urlParams, String payload)
 		{
 		String result = "";
-		String inputType = "XML"; // default is XML
+		String inputFormat = "XML"; // default is XML
 		String inputXslUrl = "";
-		String outputType = "XML"; // default is XML
+		String outputFormat = "XML"; // default is XML
 		String outputXslUrl = "";
-		Map<String, String[]> params = new HashMap<>(queryParams);
+		Map<String, String[]> params = new HashMap<>(urlParams);
 		try
 			{
 			// params from the query string
 			Set<String> keys = params.keySet();
-			// deal with inputType param if it exists
-			if (keys.contains("inputType")
+			// deal with inputFormat param if it exists (before DB call)
+			if (keys.contains("inputFormat"))
 				{
-				inputType = params.get("inputType")[0];
-				keys.remove("inputType");
-				params.remove("inputType");
-// change to XML if not already
+				inputFormat = params.get("inputFormat")[0];
+				keys.remove("inputFormat");
+				params.remove("inputFormat");
+				formats format = formats.valueOf(inputFormat.toUpperCase());
+				switch (format)
+					{
+					case XML:
+						{
+						// XML format is the default
+						break;
+						}
+					case JSON:
+						{
+						payload = XML.toString(new JSONObject(payload));
+						break;
+						}
+					default:
+						{
+						// throw IllegalArgumentException?
+						break;
+						}
+					}
 				}
-			// deal with inputXform param if it exists
+			// deal with inputXform param if it exists (before DB call)
 			if (keys.contains("inputXform"))
 				{
 				inputXslUrl = params.get("inputXform")[0];
 				keys.remove("inputXform");
 				params.remove("inputXform");
-// apply XSLT
+				Vector<String> xsltParams = new Vector<String>();
+				xslt xform = new xslt();
+				payload = xform.morph(payload,inputXslUrl,xsltParams);
 				}
-			// deal with outputType param if it exists (after DB call)
-			if (keys.contains("outputType"))
+			// deal with outputFormat param if it exists (after DB call)
+			if (keys.contains("outputFormat"))
 				{
-				outputType = params.get("outputType")[0];
-				keys.remove("outputType");
-				params.remove("outputType");
+				outputFormat = params.get("outputFormat")[0];
+				keys.remove("outputFormat");
+				params.remove("outputFormat");
 				}
 			// deal with outputXform param if it exists (after DB call)
 			if (keys.contains("outputXform"))
@@ -110,11 +150,11 @@ public class apiVerbage
 			result = db.plsql(buf.toString());
 			db.releaseConn();
 			//---------------------------------------
-			outputs output = null;
+			formats format = null;
 			try
 				{
 				// transform first if asked
-				// output depends on the result
+				// format depends on the result
 				if (!outputXslUrl.equals(""))
 					{
 					// TO DO: need a way to pass params to XSLT that
@@ -124,8 +164,8 @@ public class apiVerbage
 					result = xform.morph(result,outputXslUrl,xsltParams);
 					}
 				//-----------------------------------
-				output = outputs.valueOf(outputType.toUpperCase());
-				switch (output)
+				format = formats.valueOf(outputFormat.toUpperCase());
+				switch (format)
 					{
 					case XML:
 						{
@@ -137,17 +177,16 @@ public class apiVerbage
 						result = XML.toJSONObject(result).toString();
 						break;
 						}
-					case CSV:
+					default:
 						{
-						// only flat structures can be CSV
-						// result = CDL.toString(XML.toJSONObject(result));
+						// throw exception?
 						break;
 						}
 					}
 				}
 			catch (IllegalArgumentException e)
 				{
-				result = debug.logger("gov.llnl.tox.util.verbage","no such output type >> "+outputType);
+				result = debug.logger("gov.llnl.tox.util.verbage","no such output format >> "+outputFormat);
 				}
 			//---------------------------------------
 			}
