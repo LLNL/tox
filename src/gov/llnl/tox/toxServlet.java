@@ -33,7 +33,7 @@ public class toxServlet extends HttpServlet
 		//-------------------------------------------
 		String execute = req.getPathInfo().substring(1);
 		apiVerbage v = new apiVerbage();
-		res.setContentType(v.getOutputMIME());
+		res.setContentType(v.getOutputMIME(req.getParameterMap()));
 		String p = getPostPayload(req);
 		out.println(v.api(execute,req.getParameterMap(),p));
 		//-------------------------------------------
