@@ -19,6 +19,13 @@ This is version 2.1 of tox.
 Change History
 --------------
   
+Version 2.5:
+
+1. Renamed outputType to outputFormat.
+1. Renamed xform to outputXform.
+1. Added inputFormat.
+1. Added inputXform.
+  
 Version 2.1:
 
 1. Removed HTTP verb from PL/SQL call verbage.
