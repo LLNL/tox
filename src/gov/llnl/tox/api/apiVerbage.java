@@ -102,6 +102,7 @@ public class apiVerbage
 				inputXslUrl = params.get("inputXform")[0];
 				keys.remove("inputXform");
 				params.remove("inputXform");
+// something.xsl(param1,param2)
 				Vector<String> xsltParams = new Vector<String>();
 				xslt xform = new xslt();
 				payload = xform.morph(payload,inputXslUrl,xsltParams);
@@ -157,8 +158,7 @@ public class apiVerbage
 				// format depends on the result
 				if (!outputXslUrl.equals(""))
 					{
-					// TO DO: need a way to pass params to XSLT that
-					// is not confused with passing params to PL/SQL
+// something.xsl(param1,param2)
 					Vector<String> xsltParams = new Vector<String>();
 					xslt xform = new xslt();
 					result = xform.morph(result,outputXslUrl,xsltParams);
