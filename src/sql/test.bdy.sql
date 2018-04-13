@@ -1,5 +1,4 @@
 set echo on
-spool test.bdy.sql.err
 set define off
 
 CREATE OR REPLACE PACKAGE BODY test
@@ -134,8 +133,9 @@ CREATE OR REPLACE PACKAGE BODY test
 			tox.tox.begin_spool;
 			v_timestamp:= tox.tox.timestamp;
 		/*-----------------------*/
+		--	<root><date yyyymmdd="19690720"/></root>
 			SELECT 
-				ExtractValue(Value(temp),'/root/date/text()')
+				ExtractValue(Value(temp),'/root/date/@yyyymmdd')
 			INTO
 				v_echoDate
 			FROM
@@ -165,4 +165,3 @@ SHOW ERRORS PACKAGE BODY test;
 
 /*------------------------------------------------------------------------*/
 
-spool off

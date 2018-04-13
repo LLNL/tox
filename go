@@ -33,6 +33,7 @@ case "$1" in
 			echo -----------------------------
 			"$TOMCAT_HOME/bin/shutdown.sh"
 			rm -fr "$WEBAPPS/tox*"
+			rm -f "$TOMCAT_HOME/logs/tox*"
 			echo -----------------------------
 			cp -v tox.war "$WEBAPPS"
 			"$TOMCAT_HOME/bin/startup.sh"

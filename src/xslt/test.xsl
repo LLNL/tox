@@ -1,6 +1,5 @@
 <?xml version="1.0"?> 
-<!-- $Id: test.xsl 5 2009-10-16 15:20:39Z dacracot $ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="html" indent="yes"/>
 	<xsl:param name="title"/>
 	<xsl:param name="host"/>

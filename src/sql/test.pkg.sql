@@ -1,5 +1,4 @@
 set echo on
-spool test.pkg.sql.err
 
 CREATE OR REPLACE PACKAGE test AS
 	/*========================================================================*/
@@ -36,4 +35,3 @@ SHOW ERRORS PACKAGE test;
 
 /*------------------------------------------------------------------------*/
 
-spool off

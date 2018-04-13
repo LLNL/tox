@@ -9,9 +9,10 @@
 	<!-- =================================================================== -->
 	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
-	<property name="version" value="2.1"/>
+	<property name="version" value="2.5"/>
 	<property name="JDK" value="1.8"/>
-	<property name="db.login" value="example/examplebaby@vm3"/>
+	<property name="db.login.tox" value="tox/t0xb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
+	<property name="db.login.example" value="example/ex8mpleb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
 	<!-- =================================================================== -->
 	<!-- clean everything -->
 	<!-- =================================================================== -->
@@ -27,19 +28,19 @@
 		<echo message="clean --------------------------------------"/>
 	</target>
 	<!-- =================================================================== -->
-	<!-- load plsql -->
+	<!-- load plsql tox -->
 	<!-- =================================================================== -->
-	<target name="compile.plsql" description="compile plsql">
-		<echo message="compile.plsql ------------------------"/>
+	<target name="compile.plsql.tox" description="compile plsql for tox">
+		<echo message="compile.plsql.tox --------------------"/>
 		<mkdir dir="tmp/log"/>
-		<exec dir="src/sql" executable="sqlplus" failonerror="true" output="src/sql/api.all.sql.err">
-			<arg value="${db.login}"/>
-			<arg value="@api.all.sql"/>
+		<exec dir="src/sql" executable="sql" failonerror="true" output="src/sql/tox.all.sql.err">
+			<arg value="${db.login.tox}"/>
+			<arg value="@tox.all.sql"/>
 		</exec>
 		<echo message="looking for plsql errors -------------------"/>
 		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
 			<arg value="LINE/COL ERROR"/>
-			<arg value="api.all.sql.err"/>
+			<arg value="tox.all.sql.err"/>
 		</exec>
 		<fail message="plsql compile errors">
 			<condition>
@@ -49,13 +50,51 @@
 		<echo message="looking for line item errors ---------------"/>
 		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
 			<arg value="ERROR at"/>
-			<arg value="api.all.sql.err"/>
+			<arg value="tox.all.sql.err"/>
 		</exec>
 		<fail message="sql compile errors">
 			<condition>
 				<equals arg1="${found}" arg2="0"/>
 			</condition>
 		</fail>
+		<echo message="compile.plsql.tox --------------------"/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- load plsql example -->
+	<!-- =================================================================== -->
+	<target name="compile.plsql.example" description="compile plsql">
+		<echo message="compile.plsql.example ----------------"/>
+		<mkdir dir="tmp/log"/>
+		<exec dir="src/sql" executable="sql" failonerror="true" output="src/sql/test.all.sql.err">
+			<arg value="${db.login.example}"/>
+			<arg value="@test.all.sql"/>
+		</exec>
+		<echo message="looking for plsql errors -------------------"/>
+		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
+			<arg value="LINE/COL ERROR"/>
+			<arg value="test.all.sql.err"/>
+		</exec>
+		<fail message="plsql compile errors">
+			<condition>
+				<equals arg1="${found}" arg2="0"/>
+			</condition>
+		</fail>
+		<echo message="looking for line item errors ---------------"/>
+		<exec dir="src/sql" executable="grep" failonerror="false" resultproperty="found">
+			<arg value="ERROR at"/>
+			<arg value="test.all.sql.err"/>
+		</exec>
+		<fail message="sql compile errors">
+			<condition>
+				<equals arg1="${found}" arg2="0"/>
+			</condition>
+		</fail>
+		<echo message="compile.plsql.example ----------------"/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- load plsql -->
+	<!-- =================================================================== -->
+	<target name="compile.plsql" depends="compile.plsql.tox, compile.plsql.example" description="compile plsql">
 		<echo message="compile.plsql ------------------------"/>
 	</target>
 	<!-- =================================================================== -->
@@ -105,6 +144,7 @@
 		</copy>
 		<copy todir="tmp/tox/WEB-INF/lib">
 			<fileset dir="lib">
+				<include name="saxon9.jar"/>
 				<include name="json.jar"/>
 				<include name="ojdbc8.jar"/>
 				<include name="commons-logging-1.2.jar"/>
@@ -127,10 +167,7 @@
 	<!-- =================================================================== -->
 	<!-- default -->
 	<!-- =================================================================== -->
-<!-- DYLD_LIBRARY_PATH missing from env, so sqlplus fails
 	<target name="main" depends="clean, compile.plsql, load.war" description="default">
--->
-	<target name="main" depends="clean, load.war" description="default">
 	</target>
 	<!-- =================================================================== -->
 </project>
