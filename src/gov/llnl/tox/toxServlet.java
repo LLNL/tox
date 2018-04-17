@@ -37,6 +37,7 @@ public class toxServlet extends HttpServlet
 		res.setContentType(v.getOutputMIME(req.getParameterMap()));
 		out.println(v.api(execute,req.getParameterMap(),p));
 		//-------------------------------------------
+		debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
 		out.close();
 		}
 	//-----------------------------------------------

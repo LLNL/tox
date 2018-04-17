@@ -158,7 +158,7 @@ public class apiVerbage
 				// format depends on the result
 				if (!outputXslUrl.equals(""))
 					{
-// something.xsl(param1,param2)
+// something.xsl(param1="one",param2="two")
 					Vector<String> xsltParams = new Vector<String>();
 					xslt xform = new xslt();
 					result = xform.morph(result,outputXslUrl,xsltParams);
