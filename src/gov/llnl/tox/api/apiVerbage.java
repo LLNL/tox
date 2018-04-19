@@ -102,7 +102,7 @@ public class apiVerbage
 				inputXslUrl = params.get("inputXform")[0];
 				keys.remove("inputXform");
 				params.remove("inputXform");
-// something.xsl(param1,param2)
+// something.xsl(param1="one",param2="two")
 				Vector<String> xsltParams = new Vector<String>();
 				xslt xform = new xslt();
 				payload = xform.morph(payload,inputXslUrl,xsltParams);
