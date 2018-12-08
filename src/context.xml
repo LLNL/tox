@@ -2,14 +2,12 @@
 <!-- ========================================================== -->
 <Context>
 <!-- ========================================================== -->
-	<!-- STEP 5 -->
-	<!-- Alter the JDBC resource to Oracle for your database. -->
 	<!-- Oracle connection -->
 	<Resource
 		name="jdbc/tox"
 		scope="Shareable"
 		type="javax.sql.DataSource"
-		url="jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"
+		url="jdbc:oracle:thin:@craig-vm3:1521:DCCDB"
 		driverClassName="oracle.jdbc.OracleDriver"
 		username="tox"
 		password="t0xb8by"
@@ -21,12 +19,10 @@
 		validationQuery="select * from dual"
 		logAbandoned="true"
 		/>
-	<!-- STEP 6 -->
-	<!-- Alter the allowed IP patterns for your web clients. -->
 	<!-- Remote address filter -->
 	<Valve
 		className="org.apache.catalina.valves.RemoteAddrValve"
-		allow="127\.0\.0\.1|::1|0:0:0:0:0:0:0:1|10\.251\.99\.191|128\.15\.146\.191|128\.15\.244\.138"
+		allow="127\.0\.0\.1|::1|0:0:0:0:0:0:0:1|192\.168\.56\.1"
 		/>
 <!-- ========================================================== -->
 </Context>

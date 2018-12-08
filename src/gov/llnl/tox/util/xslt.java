@@ -38,7 +38,7 @@ public class xslt
 				{
 				String param = params.elementAt(i);
 				if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(param)>> "+param);
-				StringTokenizer toke = new StringTokenizer(param,":");
+				StringTokenizer toke = new StringTokenizer(param,"=");
 				transformer.setParameter(toke.nextToken(),toke.nextToken());
 				}
 			//-----------------------------------

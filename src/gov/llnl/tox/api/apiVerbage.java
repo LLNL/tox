@@ -102,8 +102,14 @@ public class apiVerbage
 				inputXslUrl = params.get("inputXform")[0];
 				keys.remove("inputXform");
 				params.remove("inputXform");
-// something.xsl(param1="one",param2="two")
 				Vector<String> xsltParams = new Vector<String>();
+				if (inputXslUrl.endsWith(")"))
+					{
+					String[] chop1 = inputXslUrl.split("\\(");
+					inputXslUrl = chop1[0];
+					String[] chop2 = chop1[1].split("\\)")[0].split(",");
+					xsltParams.addAll(Arrays.asList(chop2));
+					}
 				xslt xform = new xslt();
 				payload = xform.morph(payload,inputXslUrl,xsltParams);
 				}
@@ -158,8 +164,14 @@ public class apiVerbage
 				// format depends on the result
 				if (!outputXslUrl.equals(""))
 					{
-// something.xsl(param1="one",param2="two")
 					Vector<String> xsltParams = new Vector<String>();
+					if (outputXslUrl.endsWith(")"))
+						{
+						String[] chop1 = outputXslUrl.split("\\(");
+						outputXslUrl = chop1[0];
+						String[] chop2 = chop1[1].split("\\)")[0].split(",");
+						xsltParams.addAll(Arrays.asList(chop2));
+						}
 					xslt xform = new xslt();
 					result = xform.morph(result,outputXslUrl,xsltParams);
 					}

@@ -18,9 +18,6 @@ public class apiAuthenticator extends authenticator
 		return("Authorization");
 		}
 	//-----------------------------------------------
-	// NEXT STEP 1
-	// Implement your authenticate method.
-	//-----------------------------------------------
 	@Override
 	public boolean authenticate(String credentials)
 		{
