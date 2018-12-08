@@ -24,6 +24,7 @@
 			<fileset dir="./" includes="src/sql/*.sql.err"/>
 			<fileset dir="./" includes="*.out"/>
 			<fileset dir="./" includes="*.err"/>
+			<fileset dir="./" includes="test*.html"/>
 		</delete>
 		<echo message="clean --------------------------------------"/>
 	</target>
