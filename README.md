@@ -14,10 +14,14 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.6 of tox.
+This is version 2.6.1 of tox.
 
 Change History
 --------------
+  
+Version 2.6.:
+
+1. Returning proper HTTP status code for PL/SQL failures.
   
 Version 2.6:
 

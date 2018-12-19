@@ -157,48 +157,51 @@ public class apiVerbage
 			result = db.plsql(buf.toString());
 			db.releaseConn();
 			//---------------------------------------
-			formats format = null;
-			try
+			if (!result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
 				{
-				// transform first if asked
-				// format depends on the result
-				if (!outputXslUrl.equals(""))
+				formats format = null;
+				try
 					{
-					Vector<String> xsltParams = new Vector<String>();
-					if (outputXslUrl.endsWith(")"))
+					// transform first if asked
+					// format depends on the result
+					if (!outputXslUrl.equals(""))
 						{
-						String[] chop1 = outputXslUrl.split("\\(");
-						outputXslUrl = chop1[0];
-						String[] chop2 = chop1[1].split("\\)")[0].split(",");
-						xsltParams.addAll(Arrays.asList(chop2));
+						Vector<String> xsltParams = new Vector<String>();
+						if (outputXslUrl.endsWith(")"))
+							{
+							String[] chop1 = outputXslUrl.split("\\(");
+							outputXslUrl = chop1[0];
+							String[] chop2 = chop1[1].split("\\)")[0].split(",");
+							xsltParams.addAll(Arrays.asList(chop2));
+							}
+						xslt xform = new xslt();
+						result = xform.morph(result,outputXslUrl,xsltParams);
 						}
-					xslt xform = new xslt();
-					result = xform.morph(result,outputXslUrl,xsltParams);
+					//-----------------------------------
+					format = formats.valueOf(outputFormat.toUpperCase());
+					switch (format)
+						{
+						case XML:
+							{
+							// XML format is the default
+							break;
+							}
+						case JSON:
+							{
+							result = XML.toJSONObject(result).toString();
+							break;
+							}
+						default:
+							{
+							// throw exception?
+							break;
+							}
+						}
 					}
-				//-----------------------------------
-				format = formats.valueOf(outputFormat.toUpperCase());
-				switch (format)
+				catch (IllegalArgumentException e)
 					{
-					case XML:
-						{
-						// XML format is the default
-						break;
-						}
-					case JSON:
-						{
-						result = XML.toJSONObject(result).toString();
-						break;
-						}
-					default:
-						{
-						// throw exception?
-						break;
-						}
+					result = debug.logger("gov.llnl.tox.util.verbage","no such output format >> "+outputFormat);
 					}
-				}
-			catch (IllegalArgumentException e)
-				{
-				result = debug.logger("gov.llnl.tox.util.verbage","no such output format >> "+outputFormat);
 				}
 			//---------------------------------------
 			}
