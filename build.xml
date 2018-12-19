@@ -9,7 +9,7 @@
 	<!-- =================================================================== -->
 	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
-	<property name="version" value="2.6"/>
+	<property name="version" value="2.6.1"/>
 	<property name="JDK" value="1.8"/>
 	<property name="db.login.tox" value="tox/t0xb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
 	<property name="db.login.example" value="example/ex8mpleb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
