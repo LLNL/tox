@@ -19,7 +19,7 @@ This is version 2.6.1 of tox.
 Change History
 --------------
   
-Version 2.6.:
+Version 2.6.1:
 
 1. Returning proper HTTP status code for PL/SQL failures.
   
