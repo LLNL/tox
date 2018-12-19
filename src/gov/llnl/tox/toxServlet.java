@@ -35,7 +35,12 @@ public class toxServlet extends HttpServlet
 		apiVerbage v = new apiVerbage();
 		String p = getPostPayload(req);
 		res.setContentType(v.getOutputMIME(req.getParameterMap()));
-		out.println(v.api(execute,req.getParameterMap(),p));
+		String result = v.api(execute,req.getParameterMap(),p);
+		if (result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
+			res.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		else
+			res.setStatus(HttpServletResponse.SC_OK);
+		out.println(result);
 		//-------------------------------------------
 		debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
 		out.close();

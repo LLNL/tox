@@ -25,5 +25,7 @@ echo --  no parameters, POST payload, JSON input, JSON output --
 curl -X POST -d '{"root":{"date":{"yyyymmdd":19690720}}}' -u tester:testerpass "http://localhost:8080/tox/example.test.echo?outputFormat=JSON&inputFormat=JSON&inputXform=src/xslt/attr.xsl" > test12.html
 echo --  1 parameter, XML output, XSL transform with parameters --
 curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputXform=src/xslt/test.xsl(title=parameters,host=nowhere.org)" > test13.html
+echo --  not implemented -----------------------------
+curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.pineapple" > test14.html
 grep -l "error" test*.html
 echo -----------------------------
