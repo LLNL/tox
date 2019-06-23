@@ -1,5 +1,4 @@
 set echo on
-spool test.pkg.sql.err
 
 CREATE OR REPLACE PACKAGE test AS
 	/*========================================================================*/
@@ -27,6 +26,12 @@ CREATE OR REPLACE PACKAGE test AS
 			)
 			RETURN SYS_REFCURSOR;
 	/*=======================*/
+		FUNCTION testXml
+			(
+			in_root IN VARCHAR2
+			)
+			RETURN SYS_REFCURSOR;
+	/*=======================*/
 	END test;
 	/*========================================================================*/
 
@@ -36,4 +41,3 @@ SHOW ERRORS PACKAGE test;
 
 /*------------------------------------------------------------------------*/
 
-spool off

@@ -11,6 +11,7 @@ public class apiVerbage
 	{
 	//-----------------------------------------------
 	protected database db;
+	private String xformMIME;
 	//-----------------------------------------------
 	public apiVerbage()
 		{
@@ -24,45 +25,123 @@ public class apiVerbage
 			}
 		}
 	//-----------------------------------------------
-	private enum outputs
+	private enum formats
 		{
 		JSON,
-		XML,
-		CSV
+		XML
 		}
 	//-----------------------------------------------
-	public String getOutputMIME()
+	private void setOutputMIME(String mime)
 		{
-		return("application/json");
+		xformMIME = mime;
 		}
 	//-----------------------------------------------
-	public String api(String call, Map<String, String[]> lockedParams, String payload)
+	public String getOutputMIME(Map<String, String[]> urlParams)
+		{
+		Map<String, String[]> params = new HashMap<>(urlParams);
+		Set<String> keys = params.keySet();
+		if (keys.contains("outputFormat"))
+			{
+			String outputFormat = params.get("outputFormat")[0];
+			formats format = formats.valueOf(outputFormat.toUpperCase());
+			switch (format)
+				{
+				case XML:
+					{
+					return("text/xml"); 
+					}
+				case JSON:
+					{
+					return("application/json"); 
+					}
+				default:
+					{
+					return("text/plain");
+					}
+				}
+			}
+		else if (keys.contains("outputXform"))
+			{
+			return(xformMIME);
+			}
+		else
+			return("text/xml"); // default is XML
+		}
+	//-----------------------------------------------
+	public String api(String call, Map<String, String[]> urlParams, String payload)
 		{
 		String result = "";
-		String outputType = "XML";
-		String xslUrl = "";
-		Map<String, String[]> params = new HashMap<>(lockedParams);
+		String inputFormat = "XML"; // default is XML
+		String inputXslUrl = "";
+		String outputFormat = "XML"; // default is XML
+		String outputXslUrl = "";
+		Map<String, String[]> params = new HashMap<>(urlParams);
 		try
 			{
-			db.getConn();
-			StringBuffer buf = new StringBuffer(call);
-			// params appear to be in order of the query string
+			// params from the query string
 			Set<String> keys = params.keySet();
-			// deal with outputType param if it exists
-			if (keys.contains("outputType"))
+			// deal with inputFormat param if it exists (before DB call)
+			if (keys.contains("inputFormat"))
 				{
-				outputType = params.get("outputType")[0];
-				keys.remove("outputType");
-				params.remove("outputType");
+				inputFormat = params.get("inputFormat")[0];
+				keys.remove("inputFormat");
+				params.remove("inputFormat");
+				formats format = formats.valueOf(inputFormat.toUpperCase());
+				switch (format)
+					{
+					case XML:
+						{
+						// XML format is the default
+						break;
+						}
+					case JSON:
+						{
+						payload = XML.toString(new JSONObject(payload));
+						break;
+						}
+					default:
+						{
+						// throw IllegalArgumentException?
+						break;
+						}
+					}
 				}
-			// deal with xform param if it exists
-			if (keys.contains("xform"))
+			// deal with inputXform param if it exists (before DB call)
+			if (keys.contains("inputXform"))
 				{
-				xslUrl = params.get("xform")[0];
-				keys.remove("xform");
-				params.remove("xform");
+				inputXslUrl = params.get("inputXform")[0];
+				keys.remove("inputXform");
+				params.remove("inputXform");
+				Vector<String> xsltParams = new Vector<String>();
+				if (inputXslUrl.endsWith(")"))
+					{
+					String[] chop1 = inputXslUrl.split("\\(");
+					inputXslUrl = chop1[0];
+					String[] chop2 = chop1[1].split("\\)")[0].split(",");
+					xsltParams.addAll(Arrays.asList(chop2));
+					}
+				xslt xform = new xslt();
+				String[] mimeAndMorph = xform.morph(payload,inputXslUrl,xsltParams);
+				payload = mimeAndMorph[1];
+				// at this point, the MIME does not matter
+				}
+			// deal with outputFormat param if it exists (after DB call)
+			if (keys.contains("outputFormat"))
+				{
+				outputFormat = params.get("outputFormat")[0];
+				keys.remove("outputFormat");
+				params.remove("outputFormat");
+				}
+			// deal with outputXform param if it exists (after DB call)
+			if (keys.contains("outputXform"))
+				{
+				outputXslUrl = params.get("outputXform")[0];
+				keys.remove("outputXform");
+				params.remove("outputXform");
 				}
 			// add params to pl/sql call
+			db.getConn();
+			StringBuffer buf = new StringBuffer(call);
 			int paramCount = keys.size();
 			if (paramCount != 0)
 				{
@@ -90,41 +169,53 @@ public class apiVerbage
 			result = db.plsql(buf.toString());
 			db.releaseConn();
 			//---------------------------------------
-			outputs output = null;
-			try
+			if (!result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
 				{
-				output = outputs.valueOf(outputType.toUpperCase());
-				switch (output)
+				formats format = null;
+				try
 					{
-					case XML:
+					// transform first if asked
+					// format depends on the result
+					if (!outputXslUrl.equals(""))
 						{
-						// already in XML format
-						if (!xslUrl.equals(""))
+						Vector<String> xsltParams = new Vector<String>();
+						if (outputXslUrl.endsWith(")"))
 							{
-							// TO DO: need a way to pass params to XSLT that
-							// is not confused with passing params to PL/SQL
-							Vector<String> xsltParams = new Vector<String>();
-							xslt xform = new xslt();
-							result = xform.morph(result,xslUrl,xsltParams);
+							String[] chop1 = outputXslUrl.split("\\(");
+							outputXslUrl = chop1[0];
+							String[] chop2 = chop1[1].split("\\)")[0].split(",");
+							xsltParams.addAll(Arrays.asList(chop2));
 							}
-						break;
+						xslt xform = new xslt();
+						String[] mimeAndMorph = xform.morph(result,outputXslUrl,xsltParams);
+						// 0 is MIME, 1 is XSLT
+						setOutputMIME(mimeAndMorph[0]);
+						result = mimeAndMorph[1];
 						}
-					case JSON:
+					//-----------------------------------
+					format = formats.valueOf(outputFormat.toUpperCase());
+					switch (format)
 						{
-						result = XML.toJSONObject(result).toString();
-						break;
-						}
-					case CSV:
-						{
-						// only flat structures can be CSV
-						// result = CDL.toString(XML.toJSONObject(result));
-						break;
+						case XML:
+							{
+							// XML format is the default
+							break;
+							}
+						case JSON:
+							{
+							result = XML.toJSONObject(result).toString();
+							break;
+							}
+						default:
+							{
+							break;
+							}
 						}
 					}
-				}
-			catch (IllegalArgumentException e)
-				{
-				result = debug.logger("gov.llnl.tox.util.verbage","no such output type >> "+outputType);
+				catch (IllegalArgumentException e)
+					{
+					result = debug.logger("gov.llnl.tox.util.verbage","no such output format >> "+outputFormat);
+					}
 				}
 			//---------------------------------------
 			}

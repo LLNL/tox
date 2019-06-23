@@ -1,9 +1,6 @@
 #!/bin/bash
 SECONDS=0
 # --------------------------------
-# STEP 7
-# Set your base directory for the location of Tomcat.
-# --------------------------------
 if [ -z "$WHEREAMI" ]; then
     pushd .. > /dev/null
     export WHEREAMI=$PWD
@@ -25,6 +22,13 @@ case "$1" in
 		echo "       compile and deploy tox"
 		echo -----------------------------
 		;;
+	'bounce')
+		echo -----------------------------
+		"$TOMCAT_HOME/bin/shutdown.sh"
+		"$TOMCAT_HOME/bin/startup.sh"
+		echo -----------------------------
+		say "bounced"
+		;;
 	*)
 		ant
 		if [ $? = 0 ] ; then
@@ -33,12 +37,10 @@ case "$1" in
 			echo -----------------------------
 			"$TOMCAT_HOME/bin/shutdown.sh"
 			rm -fr "$WEBAPPS/tox*"
+			rm -f "$TOMCAT_HOME/logs/tox*"
 			echo -----------------------------
 			cp -v tox.war "$WEBAPPS"
 			"$TOMCAT_HOME/bin/startup.sh"
-			sleep 2
-			echo -----------------------------
-			unitTest
 			echo -----------------------------
 			say "success"
 		else

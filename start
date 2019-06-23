@@ -1,0 +1,17 @@
+#!/bin/bash
+# --------------------------------
+if [ -z "$WHEREAMI" ]; then
+    pushd .. > /dev/null
+    export WHEREAMI=$PWD
+    popd > /dev/null
+fi
+# --------------------------------
+export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
+export TOMCAT_HOME=$WHEREAMI/tomcat
+export JAVA_OPTS=
+export CATALINA_OPTS="-Doracle.jdbc.autoCommitSpecCompliant=false"
+echo -----------------------------
+say "starting"
+"$TOMCAT_HOME/bin/startup.sh"
+say "started"
+echo -----------------------------
