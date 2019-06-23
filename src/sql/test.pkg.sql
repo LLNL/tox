@@ -26,6 +26,12 @@ CREATE OR REPLACE PACKAGE test AS
 			)
 			RETURN SYS_REFCURSOR;
 	/*=======================*/
+		FUNCTION testXml
+			(
+			in_root IN VARCHAR2
+			)
+			RETURN SYS_REFCURSOR;
+	/*=======================*/
 	END test;
 	/*========================================================================*/
 

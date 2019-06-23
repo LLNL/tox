@@ -1,31 +1,31 @@
 #!/bin/bash
 echo --  no parameters -----------------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.alive" > test1.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.alive" > test1.html
 echo --  1 parameter -------------------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD" > test2.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD" > test2.html
 echo --  3 parameters ------------------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_maskIn=mm/dd/yyyy&in_date=07/17/1961&in_maskOut=YYYYMMDD" > test3.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_maskIn=mm/dd/yyyy&in_date=07/17/1961&in_maskOut=YYYYMMDD" > test3.html
 echo --  1 parameter, XML output -------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=XML" > test4.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=XML" > test4.html
 echo --  1 parameter, XML output, XSL transform ----
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=XML&outputXform=src/xslt/test.xsl" > test5.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=XML&outputXform=src/xslt/test.xsl" > test5.html
 echo --  1 parameter, XSL transform ----------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputXform=src/xslt/test.xsl" > test6.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputXform=src/xslt/test.xsl" > test6.html
 echo --  1 parameter, JSON output ------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=JSON" > test7.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=JSON" > test7.html
 echo --  1 parameter, JSON output ------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=JSON&outputXform=src/xslt/test.xsl" > test8.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputFormat=JSON&outputXform=src/xslt/test.xsl" > test8.html
 echo --  no parameters, POST payload ---------------
-curl -X POST -d '<root><date yyyymmdd="19690720"/></root>' -u tester:testerpass "http://localhost:8080/tox/example.test.echo" > test9.html
+curl -X POST -d '<root><date yyyymmdd="19690720"/></root>' -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.echo" > test9.html
 echo --  no parameters, POST payload, JSON output --
-curl -X POST -d '<root><date yyyymmdd="19690720"/></root>' -u tester:testerpass "http://localhost:8080/tox/example.test.echo?outputFormat=JSON" > test10.html
+curl -X POST -d '<root><date yyyymmdd="19690720"/></root>' -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.echo?outputFormat=JSON" > test10.html
 echo --  no parameters, POST payload, JSON input --
-curl -X POST -d '{"root":{"date":{"yyyymmdd":19690720}}}' -u tester:testerpass "http://localhost:8080/tox/example.test.echo?inputFormat=JSON&inputXform=src/xslt/attr.xsl" > test11.html
+curl -X POST -d '{"root":{"date":{"yyyymmdd":19690720}}}' -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.echo?inputFormat=JSON&inputXform=src/xslt/attr.xsl" > test11.html
 echo --  no parameters, POST payload, JSON input, JSON output --
-curl -X POST -d '{"root":{"date":{"yyyymmdd":19690720}}}' -u tester:testerpass "http://localhost:8080/tox/example.test.echo?outputFormat=JSON&inputFormat=JSON&inputXform=src/xslt/attr.xsl" > test12.html
+curl -X POST -d '{"root":{"date":{"yyyymmdd":19690720}}}' -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.echo?outputFormat=JSON&inputFormat=JSON&inputXform=src/xslt/attr.xsl" > test12.html
 echo --  1 parameter, XML output, XSL transform with parameters --
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputXform=src/xslt/test.xsl(title=parameters,host=nowhere.org)" > test13.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD&outputXform=src/xslt/test.xsl(title=parameters,host=nowhere.org)" > test13.html
 echo --  not implemented -----------------------------
-curl -X GET -u tester:testerpass "http://localhost:8080/tox/example.test.pineapple" > test14.html
+curl -X GET -u tester:testerpass -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/example.test.pineapple" > test14.html
 grep -l "error" test*.html
 echo -----------------------------

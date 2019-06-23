@@ -9,7 +9,7 @@
 	<!-- =================================================================== -->
 	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
-	<property name="version" value="2.6.1"/>
+	<property name="version" value="2.8"/>
 	<property name="JDK" value="1.8"/>
 	<property name="db.login.tox" value="tox/t0xb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
 	<property name="db.login.example" value="example/ex8mpleb8by@jdbc:oracle:thin:@craig-vm3.llnl.gov:1521:DCCDB"/>
@@ -63,7 +63,7 @@
 	<!-- =================================================================== -->
 	<!-- load plsql example -->
 	<!-- =================================================================== -->
-	<target name="compile.plsql.example" description="compile plsql">
+	<target name="compile.plsql.example" description="compile plsql for example">
 		<echo message="compile.plsql.example ----------------"/>
 		<mkdir dir="tmp/log"/>
 		<exec dir="src/sql" executable="sql" failonerror="true" output="src/sql/test.all.sql.err">
@@ -125,7 +125,7 @@
 	<!-- =================================================================== -->
 	<!-- load war -->
 	<!-- =================================================================== -->
-	<target name="load.war" depends="clean, compile.java" description="move everything to the web archive">
+	<target name="load.war" depends="clean, compile.java" description="move everything to the tox web archive">
 		<echo message="load.war -----------------------------------"/>
 		<mkdir dir="tmp/tox"/>
 		<copy todir="tmp/tox/META-INF">
@@ -166,9 +166,28 @@
 		<echo message="load.war -----------------------------------"/>
 	</target>
 	<!-- =================================================================== -->
+	<!-- load test -->
+	<!-- =================================================================== -->
+	<target name="load.test" depends="clean, compile.plsql.example" description="move everything to the test web archive">
+		<echo message="load.test ----------------------------------"/>
+		<mkdir dir="tmp/test"/>
+		<copy todir="tmp/test/element">
+			<fileset dir="src/web/element">
+				<include name="toxElement*.html"/>
+			</fileset>
+		</copy>
+		<copy todir="tmp/test/table">
+			<fileset dir="src/web/table"/>
+		</copy>
+		<war warfile="test.war" needxmlfile="false">
+			<fileset dir="tmp/test"/>
+		</war>
+		<echo message="load.test ----------------------------------"/>
+	</target>
+	<!-- =================================================================== -->
 	<!-- default -->
 	<!-- =================================================================== -->
-	<target name="main" depends="clean, compile.plsql, load.war" description="default">
+	<target name="main" depends="clean, compile.plsql.tox, load.war" description="default">
 	</target>
 	<!-- =================================================================== -->
 </project>

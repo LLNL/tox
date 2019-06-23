@@ -14,10 +14,14 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.6.1 of tox.
+This is version 2.8 of tox.
 
 Change History
 --------------
+  
+Version 2.8:
+
+1. The XSLT transform now will pass a defined output media-type (MIME) to the HTTP header.
   
 Version 2.6.1:
 

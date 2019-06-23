@@ -11,6 +11,7 @@ public class apiVerbage
 	{
 	//-----------------------------------------------
 	protected database db;
+	private String xformMIME;
 	//-----------------------------------------------
 	public apiVerbage()
 		{
@@ -28,6 +29,11 @@ public class apiVerbage
 		{
 		JSON,
 		XML
+		}
+	//-----------------------------------------------
+	private void setOutputMIME(String mime)
+		{
+		xformMIME = mime;
 		}
 	//-----------------------------------------------
 	public String getOutputMIME(Map<String, String[]> urlParams)
@@ -53,6 +59,10 @@ public class apiVerbage
 					return("text/plain");
 					}
 				}
+			}
+		else if (keys.contains("outputXform"))
+			{
+			return(xformMIME);
 			}
 		else
 			return("text/xml"); // default is XML
@@ -111,7 +121,9 @@ public class apiVerbage
 					xsltParams.addAll(Arrays.asList(chop2));
 					}
 				xslt xform = new xslt();
-				payload = xform.morph(payload,inputXslUrl,xsltParams);
+				String[] mimeAndMorph = xform.morph(payload,inputXslUrl,xsltParams);
+				payload = mimeAndMorph[1];
+				// at this point, the MIME does not matter
 				}
 			// deal with outputFormat param if it exists (after DB call)
 			if (keys.contains("outputFormat"))
@@ -175,7 +187,10 @@ public class apiVerbage
 							xsltParams.addAll(Arrays.asList(chop2));
 							}
 						xslt xform = new xslt();
-						result = xform.morph(result,outputXslUrl,xsltParams);
+						String[] mimeAndMorph = xform.morph(result,outputXslUrl,xsltParams);
+						// 0 is MIME, 1 is XSLT
+						setOutputMIME(mimeAndMorph[0]);
+						result = mimeAndMorph[1];
 						}
 					//-----------------------------------
 					format = formats.valueOf(outputFormat.toUpperCase());
@@ -193,7 +208,6 @@ public class apiVerbage
 							}
 						default:
 							{
-							// throw exception?
 							break;
 							}
 						}

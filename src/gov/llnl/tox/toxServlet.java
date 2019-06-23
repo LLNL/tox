@@ -34,8 +34,9 @@ public class toxServlet extends HttpServlet
 		String execute = req.getPathInfo().substring(1);
 		apiVerbage v = new apiVerbage();
 		String p = getPostPayload(req);
-		res.setContentType(v.getOutputMIME(req.getParameterMap()));
 		String result = v.api(execute,req.getParameterMap(),p);
+		// set MIME after result in case XSLT sets it
+		res.setContentType(v.getOutputMIME(req.getParameterMap()));
 		if (result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
 			res.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		else
