@@ -1,0 +1,5 @@
+<Project projectName="">
+  <Jar>./tox.jar</Jar>
+  <AuxClasspathEntry>./lib</AuxClasspathEntry>
+  <SrcDir>./src</SrcDir>
+</Project>

@@ -1,7 +1,5 @@
 #!/bin/bash
-# --------------------------------
-# STEP 7
-# Set your base directory for the location of Tomcat.
+SECONDS=0
 # --------------------------------
 if [ -z "$WHEREAMI" ]; then
     pushd .. > /dev/null
@@ -10,6 +8,8 @@ if [ -z "$WHEREAMI" ]; then
 fi
 # --------------------------------
 export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
+export ANT_HOME=$WHEREAMI/ant
+export PATH=$PATH:$ANT_HOME/bin
 export TOMCAT_HOME=$WHEREAMI/tomcat
 export WEBAPPS=$TOMCAT_HOME/webapps
 export JAVA_OPTS=
@@ -22,20 +22,25 @@ case "$1" in
 		echo "       compile and deploy tox"
 		echo -----------------------------
 		;;
+	'bounce')
+		echo -----------------------------
+		"$TOMCAT_HOME/bin/shutdown.sh"
+		"$TOMCAT_HOME/bin/startup.sh"
+		echo -----------------------------
+		say "bounced"
+		;;
 	*)
 		ant
 		if [ $? = 0 ] ; then
 			echo -----------------------------
 			ant clean
 			echo -----------------------------
-			$TOMCAT_HOME/bin/shutdown.sh
-			rm -fr $WEBAPPS/tox*
+			"$TOMCAT_HOME/bin/shutdown.sh"
+			rm -fr "$WEBAPPS/tox*"
+			rm -f "$TOMCAT_HOME/logs/tox*"
 			echo -----------------------------
-			cp -v tox.war $WEBAPPS
-			$TOMCAT_HOME/bin/startup.sh
-			sleep 2
-			echo -----------------------------
-			unitTest
+			cp -v tox.war "$WEBAPPS"
+			"$TOMCAT_HOME/bin/startup.sh"
 			echo -----------------------------
 			say "success"
 		else
@@ -43,3 +48,5 @@ case "$1" in
 		fi
 		;;
 esac
+duration=$SECONDS
+echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."

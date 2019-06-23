@@ -23,8 +23,9 @@ public class xslt
 			}
 		}
 	//-----------------------------------------------
-	public String morph(String xml, String xslUrl, Vector params)
+	public String[] morph(String xml, String xslUrl, Vector<String> params)
 		{
+		String[] result;
 		String output;
 		ByteArrayInputStream xmlStream;
 		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(xslUrl)>> "+xslUrl);
@@ -36,9 +37,9 @@ public class xslt
 			//-----------------------------------
 			for (int i=0; i<params.size(); i++)
 				{
-				String param = (String)params.elementAt(i);
+				String param = params.elementAt(i);
 				if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(param)>> "+param);
-				StringTokenizer toke = new StringTokenizer(param,":");
+				StringTokenizer toke = new StringTokenizer(param,"=");
 				transformer.setParameter(toke.nextToken(),toke.nextToken());
 				}
 			//-----------------------------------
@@ -50,15 +51,18 @@ public class xslt
 			DataOutputStream dataOut = new DataOutputStream(baos);
 			//-----------------------------------
 			transformer.transform(new StreamSource(xmlStream), new StreamResult(new OutputStreamWriter(dataOut)));
+			String mime = transformer.getOutputProperty(OutputKeys.MEDIA_TYPE);
 			output = baos.toString();
+			result = new String[]{mime, output};
+			if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(output)>> "+output);
 			//-----------------------------------
 			}
 		catch (Exception e)
 			{
 			output = debug.logger("gov.llnl.tox.util.xslt","error: morph>> ",e);
+			result = new String[]{"text/plain", output};
 			}
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(output)>> "+output);
-		return(output);
+		return(result);
 		}
 	//-----------------------------------------------
 	}

@@ -14,11 +14,34 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.0 of tox.
+This is version 2.8 of tox.
 
 Change History
 --------------
   
+Version 2.8:
+
+1. The XSLT transform now will pass a defined output media-type (MIME) to the HTTP header.
+  
+Version 2.6.1:
+
+1. Returning proper HTTP status code for PL/SQL failures.
+  
+Version 2.6:
+
+1. Parameterized both input and output Xform.
+  
+Version 2.5:
+
+1. Renamed outputType to outputFormat.
+1. Renamed xform to outputXform.
+1. Added inputFormat.
+1. Added inputXform.
+  
+Version 2.1:
+
+1. Removed HTTP verb from PL/SQL call verbage.
+
 Version 2.0:
 
 1. Modernized for Java 8.

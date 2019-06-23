@@ -1,6 +1,5 @@
 set echo on
 set define off
-spool tox.bdy.sql.err
 
 CREATE OR REPLACE PACKAGE BODY tox
 	AS
@@ -129,4 +128,3 @@ SHOW ERRORS PACKAGE BODY tox;
 
 /*------------------------------------------------------------------------*/
 
-spool off

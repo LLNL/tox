@@ -29,15 +29,21 @@ public class toxServlet extends HttpServlet
 	//-----------------------------------------------
 	private void doVerb(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		String verb = req.getMethod();
 		PrintWriter out = res.getWriter();
 		//-------------------------------------------
-		String path = req.getPathInfo().substring(1);
-		String[] execute = path.split("/");
-		apiVerbage v = new apiVerbage(verb);
-		res.setContentType(v.getOutputMIME());
-		out.println(v.api(execute[0],execute[1],req.getParameterMap()));
+		String execute = req.getPathInfo().substring(1);
+		apiVerbage v = new apiVerbage();
+		String p = getPostPayload(req);
+		String result = v.api(execute,req.getParameterMap(),p);
+		// set MIME after result in case XSLT sets it
+		res.setContentType(v.getOutputMIME(req.getParameterMap()));
+		if (result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
+			res.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		else
+			res.setStatus(HttpServletResponse.SC_OK);
+		out.println(result);
 		//-------------------------------------------
+		debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
 		out.close();
 		}
 	//-----------------------------------------------
@@ -61,13 +67,13 @@ public class toxServlet extends HttpServlet
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		doVerb(req,res);
+		notImplemented(req,res);
 		}
 	//-----------------------------------------------
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
-		doVerb(req,res);
+		notImplemented(req,res);
 		}
 	//-----------------------------------------------
 	@Override
