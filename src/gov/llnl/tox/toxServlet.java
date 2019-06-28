@@ -43,7 +43,7 @@ public class toxServlet extends HttpServlet
 			res.setStatus(HttpServletResponse.SC_OK);
 		out.println(result);
 		//-------------------------------------------
-		debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
+		if (debug.DEBUG) debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
 		out.close();
 		}
 	//-----------------------------------------------
