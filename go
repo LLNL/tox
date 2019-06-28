@@ -13,7 +13,8 @@ export PATH=$PATH:$ANT_HOME/bin
 export TOMCAT_HOME=$WHEREAMI/tomcat
 export WEBAPPS=$TOMCAT_HOME/webapps
 export JAVA_OPTS=
-export CATALINA_OPTS="-Doracle.jdbc.autoCommitSpecCompliant=false"
+# export CATALINA_OPTS="-Doracle.jdbc.autoCommitSpecCompliant=false"
+export CATALINA_OPTS="-Doracle.jdbc.autoCommitSpecCompliant=false -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
 echo -----------------------------
 say "go"
 case "$1" in
