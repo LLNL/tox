@@ -15,7 +15,7 @@
 			<param-name>debugLevel</param-name>
 			<!-- value of verbose will log verbosely -->
 			<!-- anything else will be quiet except for errors -->
-			<param-value>verbose</param-value>
+			<param-value>quiet</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
