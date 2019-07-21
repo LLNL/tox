@@ -12,6 +12,7 @@ public class toxServlet extends HttpServlet
 	{
 	//-----------------------------------------------
 	private static final long serialVersionUID = 1961071705050000001L;
+	private String version = toxServlet.class.getPackage().getImplementationVersion();;
 	//-----------------------------------------------
 	public void init(ServletConfig config) throws ServletException
 		{
@@ -19,7 +20,7 @@ public class toxServlet extends HttpServlet
 		try
 			{
 			debug.init(config);
-			debug.logger("gov.llnl.tox.toxServlet","initialized tox version: "+toxServlet.class.getPackage().getImplementationVersion()+" with "+config.getInitParameter("debugLevel")+" logging");
+			debug.logger("gov.llnl.tox.toxServlet","initialized tox version: "+version+" with "+config.getInitParameter("debugLevel")+" logging");
 			}
 		catch (Exception e)
 			{
@@ -30,17 +31,29 @@ public class toxServlet extends HttpServlet
 	private void doVerb(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
 		PrintWriter out = res.getWriter();
+		String result = null;
+		String p = null;
+		String execute = "";
 		//-------------------------------------------
-		String execute = req.getPathInfo().substring(1);
-		apiVerbage v = new apiVerbage();
-		String p = getPostPayload(req);
-		String result = v.api(execute,req.getParameterMap(),p);
-		// set MIME after result in case XSLT sets it
-		res.setContentType(v.getOutputMIME(req.getParameterMap()));
-		if (result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
-			res.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		String path = req.getPathInfo();
+		if (path != null) execute = path.substring(1);
+		if (execute.isEmpty())
+			{
+			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			result = "<tox version=\""+version+"\"/>";
+			}
 		else
-			res.setStatus(HttpServletResponse.SC_OK);
+			{
+			apiVerbage v = new apiVerbage();
+			p = getPostPayload(req);
+			result = v.api(execute,req.getParameterMap(),p);
+			// set MIME after result in case XSLT sets it
+			res.setContentType(v.getOutputMIME(req.getParameterMap()));
+			if (result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
+				res.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+			else
+				res.setStatus(HttpServletResponse.SC_OK);
+			}
 		out.println(result);
 		//-------------------------------------------
 		if (debug.DEBUG) debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
