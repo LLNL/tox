@@ -14,10 +14,14 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.8 of tox.
+This is version 2.8.1 of tox.
 
 Change History
 --------------
+  
+Version 2.8.1:
+
+1. Invoking tox with no PL/SQL reference resulted in an exception.  It will now report the tox version.
   
 Version 2.8:
 
