@@ -18,6 +18,6 @@ Steps
 Next Steps
 ----------
 
-1. Change the authentication method in apiAuthenticator.java.
-	* The default method is hardcoded to user equal to tester and password equal to testerpass.
+1. Add your calling IP address to context.xml in Context > Value > allow.
+	* The regular expression already includes localhost.
 1. Call the new authentication method in apiFilter.java.

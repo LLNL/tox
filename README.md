@@ -19,6 +19,10 @@ This is version 2.8.1 of tox.
 Change History
 --------------
   
+Version 2.9:
+
+1. Removed unused and mostly commented out code which checked for username/password credentials.
+  
 Version 2.8.1:
 
 1. Invoking tox with no PL/SQL reference resulted in an exception.  It will now report the tox version.

@@ -24,21 +24,7 @@ public class apiFilter implements Filter
 		if (req instanceof HttpServletRequest)
 			{
 			HttpServletRequest hreq = (HttpServletRequest) req;
-// 			apiAuthenticator auth = new apiAuthenticator();
-// 			String credential = hreq.getHeader(auth.getKeyword());
-// 			//---------------------------------------
-// 			if (auth.authenticate(credential))
-// 				{
-				chain.doFilter(req,res);
-// 				}
-// 			else
-// 				{
-// 				if (res instanceof HttpServletResponse)
-// 					{
-// 					HttpServletResponse hres = (HttpServletResponse)res;
-// 					hres.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-// 					}
-// 				}
+			chain.doFilter(req,res);
 			}
 		//-------------------------------------------
 		}
