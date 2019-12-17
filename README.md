@@ -14,7 +14,7 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.8.1 of tox.
+This is version 2.9 of tox.
 
 Change History
 --------------
