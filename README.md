@@ -1,15 +1,26 @@
-tox - (Tomcat, Oracle & XML)
+tox
 ============================
 
 What is it?
 -----------
 
-The tox (Tomcat Oracle & XML) web archive is a foundation for development of
-HTTP based applications using Tomcat (or some other servlet container) and an
-Oracle RDBMS. Use of tox requires coding primarily in PL/SQL, JavaScript, and
-XSLT, but also in HTML, CSS, and potentially Java. Coded in Java and PL/SQL
-itself, tox provides the foundation for more complex applications to be built.
+The tox (Tomcat Oracle & XML) is a micro service that translates your PL/SQL packages directly into addressable URLs.  For instance, from a schema named example...
 
+```
+CREATE OR REPLACE PACKAGE test AS
+	FUNCTION formatted
+		(
+		in_mask IN VARCHAR2
+		)
+		RETURN SYS_REFCURSOR;
+END test;
+```
+
+...becomes...
+
+`http://localhost:8080/tox/example.test.formatted?in_mask=YYYYMMDD`.
+
+Output can be either XML or JSON.  Input and output can be transformed via XSLT.  GET or POST verbs are supported including payloads attached to POSTs.
 
 Version
 -------
