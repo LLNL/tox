@@ -28,7 +28,7 @@ public class xslt
 		String[] result;
 		String output;
 		ByteArrayInputStream xmlStream;
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(xslUrl)>> "+xslUrl);
+		if (debug.VERBOSE) debug.logger("gov.llnl.tox.util.xslt","morph(xslUrl)>> "+xslUrl);
 		//-------------------------------------------
 		try
 			{
@@ -38,7 +38,7 @@ public class xslt
 			for (int i=0; i<params.size(); i++)
 				{
 				String param = params.elementAt(i);
-				if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(param)>> "+param);
+				if (debug.VERBOSE) debug.logger("gov.llnl.tox.util.xslt","morph(param)>> "+param);
 				StringTokenizer toke = new StringTokenizer(param,"=");
 				transformer.setParameter(toke.nextToken(),toke.nextToken());
 				}
@@ -54,7 +54,7 @@ public class xslt
 			String mime = transformer.getOutputProperty(OutputKeys.MEDIA_TYPE);
 			output = baos.toString();
 			result = new String[]{mime, output};
-			if (debug.DEBUG) debug.logger("gov.llnl.tox.util.xslt","morph(output)>> "+output);
+			if (debug.VERBOSE) debug.logger("gov.llnl.tox.util.xslt","morph(output)>> "+output);
 			//-----------------------------------
 			}
 		catch (Exception e)
