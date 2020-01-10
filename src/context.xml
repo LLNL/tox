@@ -7,7 +7,7 @@
 		name="jdbc/tox"
 		scope="Shareable"
 		type="javax.sql.DataSource"
-		url="jdbc:oracle:thin:@nep-vm3:1521:DCCDB"
+		url="jdbc:oracle:thin:@192.168.56.102:1521:DCCDB"
 		driverClassName="oracle.jdbc.OracleDriver"
 		username="tox"
 		password="t0xb8by"
