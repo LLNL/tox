@@ -14,10 +14,14 @@ itself, tox provides the foundation for more complex applications to be built.
 Version
 -------
 
-This is version 2.9 of tox.
+This is version 2.10 of tox.
 
 Change History
 --------------
+  
+Version 2.10:
+
+1. Separated logging levels verbose and debug where debug include HTTP request dumps, but verbose does not.  Level of quiet still reports only errors.
   
 Version 2.9:
 

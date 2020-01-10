@@ -13,6 +13,7 @@ public class debug
 	private static ServletContext context;
 	private static String debugLevel;
 	public static boolean DEBUG;
+	public static boolean VERBOSE;
 	//-----------------------------------------------
 	public static String stackTrace(Exception e)
 		{
@@ -26,7 +27,8 @@ public class debug
 		context = c.getServletContext();
 		dateFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSS");
 		debugLevel = c.getInitParameter("debugLevel");
-		DEBUG = debugLevel.equals("verbose");
+		VERBOSE = debugLevel.equals("verbose") || debugLevel.equals("debug");
+		DEBUG = debugLevel.equals("debug");
 		}
 	//-----------------------------------------------
 	private static String txtFormat(String who, String txt)

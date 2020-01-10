@@ -32,7 +32,7 @@ public class database
 	//------------------------------------------------
 	public String plsql (String call)
 		{
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.database","plsql(call)>> "+call);
+		if (debug.VERBOSE) debug.logger("gov.llnl.tox.util.database","plsql(call)>> "+call);
 		String result = "";
 		try
 			{
@@ -100,7 +100,7 @@ public class database
 			{
 			result = debug.logger("gov.llnl.tox.util.database","error: plsql:prepareCall>> " + call,e);
 			}
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.util.database","plsql(output)>> "+result);
+		if (debug.VERBOSE) debug.logger("gov.llnl.tox.util.database","plsql(output)>> "+result);
 		return(result);
 		}
 	//-----------------------------------------------

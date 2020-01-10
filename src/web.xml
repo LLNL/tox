@@ -13,7 +13,8 @@
 		<load-on-startup>1</load-on-startup>
 		<init-param>
 			<param-name>debugLevel</param-name>
-			<!-- value of verbose will log verbosely -->
+			<!-- value of debug will include HTTP request content -->
+			<!-- value of verbose will log well verbosely -->
 			<!-- anything else will be quiet except for errors -->
 			<param-value>verbose</param-value>
 		</init-param>
