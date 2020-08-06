@@ -8,9 +8,7 @@ CREATE TABLE testing
 	key NUMBER(11) NOT NULL,
 	txt VARCHAR2(255) NULL,
 	seq NUMBER(11) NOT NULL
-	)
-TABLESPACE users
-;
+	);
 
 INSERT INTO testing VALUES (1,'one',1000);
 INSERT INTO testing VALUES (2,'two',1001);
