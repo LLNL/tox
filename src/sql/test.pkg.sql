@@ -32,6 +32,9 @@ CREATE OR REPLACE PACKAGE test AS
 			)
 			RETURN SYS_REFCURSOR;
 	/*=======================*/
+		FUNCTION testText
+			RETURN SYS_REFCURSOR;
+	/*=======================*/
 	END test;
 	/*========================================================================*/
 

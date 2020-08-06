@@ -184,12 +184,7 @@ CREATE OR REPLACE PACKAGE BODY test
 			LOOP
 				FETCH c_testing INTO v_testing;
 				EXIT WHEN (c_testing%NOTFOUND);
---
--- parser does not like this
  				tox.into_spool('<testing key="'||v_testing.key||'" txt="'||v_testing.txt||'" seq="'||v_testing.seq||'" />');
---
--- better, but not inside root
---				tox.into_spool('<testing key="'||v_testing.key||'" txt="'||v_testing.txt||'" seq="'||v_testing.seq||'"></testing>');
 			END LOOP;
 			CLOSE c_testing;
 			tox.into_spool('</'||in_root||'>');
@@ -204,6 +199,48 @@ CREATE OR REPLACE PACKAGE BODY test
 				RETURN tox.end_spool;
 		/*=======================*/
 		END testXml;
+	/*========================================================================*/
+	FUNCTION testText
+		RETURN SYS_REFCURSOR
+		AS
+		/*-----------------------*/
+		v_timestamp VARCHAR(16);
+		v_error VARCHAR2(1024);
+		/*-----------------------*/
+		CURSOR c_testing IS
+			SELECT
+				*
+			FROM
+				testing;
+		/*-----------------------*/
+		v_testing c_testing%ROWTYPE;
+		/*=======================*/
+		BEGIN
+		/*=======================*/
+			tox.begin_spool;
+			v_timestamp:= tox.timestamp;
+		/*-----------------------*/
+			tox.into_spool(' timestamp >> '||v_timestamp);
+			tox.into_spool(' feedback >> ok');
+			OPEN c_testing;
+			LOOP
+				FETCH c_testing INTO v_testing;
+				EXIT WHEN (c_testing%NOTFOUND);
+ 				tox.into_spool('     key >> '||v_testing.key||', txt >> '||v_testing.txt||', seq >> '||v_testing.seq);
+			END LOOP;
+			CLOSE c_testing;
+		/*-----------------------*/
+			COMMIT;
+			RETURN tox.end_spool;
+			EXCEPTION WHEN OTHERS THEN
+				tox.reset_spool;
+				v_error:= tox.encode(Sqlerrm);
+				tox.into_spool(' timestamp >> '||v_timestamp);
+				tox.into_spool(' feedback >> error: '||v_error);
+				COMMIT;
+				RETURN tox.end_spool;
+		/*=======================*/
+		END testText;
 	/*========================================================================*/
 	END test;
 	/*========================================================================*/

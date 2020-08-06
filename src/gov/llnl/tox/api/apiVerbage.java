@@ -28,7 +28,8 @@ public class apiVerbage
 	private enum formats
 		{
 		JSON,
-		XML
+		XML,
+		TEXT
 		}
 	//-----------------------------------------------
 	private void setOutputMIME(String mime)
@@ -38,14 +39,11 @@ public class apiVerbage
 	//-----------------------------------------------
 	public String getOutputMIME(Map<String, String[]> urlParams)
 		{
-debug.logger("issue-14","-- 1 --");
 		Map<String, String[]> params = new HashMap<>(urlParams);
 		Set<String> keys = params.keySet();
-debug.logger("issue-14","-- 2 --");
 		if (keys.contains("outputFormat"))
 			{
 			String outputFormat = params.get("outputFormat")[0];
-debug.logger("issue-14","-- 3 -- "+outputFormat);
 			formats format = formats.valueOf(outputFormat.toUpperCase());
 			switch (format)
 				{
@@ -57,7 +55,7 @@ debug.logger("issue-14","-- 3 -- "+outputFormat);
 					{
 					return("application/json"); 
 					}
-				default:
+				case TEXT:
 					{
 					return("text/plain");
 					}
@@ -65,14 +63,9 @@ debug.logger("issue-14","-- 3 -- "+outputFormat);
 			}
 		else if (keys.contains("outputXform"))
 			{
-debug.logger("issue-14","-- 4 -- "+xformMIME);
 			return(xformMIME);
 			}
-		else
-			{
-debug.logger("issue-14","-- 5 --");
-			return("text/xml"); // default is XML
-			}
+		return("text/xml"); // default is XML
 		}
 	//-----------------------------------------------
 	public String api(String call, Map<String, String[]> urlParams, String payload)

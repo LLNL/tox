@@ -37,4 +37,8 @@ echo --  default XML as XML -------------------
 curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testXml?in_root=asDefault" > test18.html
 echo --  set MEDIA-TYPE convert to TEXT -------------------
 curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testXml?in_root=toText&outputXform=src/xslt/text.xsl" > test19.html
+echo --  default XML as TEXT -------------------
+curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testText" > test20.html
+echo --  set TEXT as TEXT -------------------
+curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testText?outputFormat=TEXT" > test21.html
 echo -----------------------------------------------

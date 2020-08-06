@@ -9,10 +9,10 @@
 	<!-- =================================================================== -->
 	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
-	<property name="version" value="2.10"/>
+	<property name="version" value="2.10.1"/>
 	<property name="JDK" value="1.8"/>
-	<property name="db.login.tox" value="neptox1/secret@jdbc:oracle:thin:@wcidbracnp.llnl.gov:1521/wcidev.llnl.gov"/>
-	<property name="db.login.example" value="nepsbx1/secret@jdbc:oracle:thin:@wcidbracnp.llnl.gov:1521/wcidev.llnl.gov"/>
+	<property name="db.login.tox" value="neptox1/password@jdbc:oracle:thin:@nep-vm3.llnl.gov:1521:DCCDB"/>
+	<property name="db.login.example" value="nepsbx1/password@jdbc:oracle:thin:@nep-vm3.llnl.gov:1521:DCCDB"/>
 	<!-- =================================================================== -->
 	<!-- clean everything -->
 	<!-- =================================================================== -->
