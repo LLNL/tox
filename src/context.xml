@@ -10,7 +10,7 @@
 		url="jdbc:oracle:thin:@wcidbracnp.llnl.gov:1521/wcidev.llnl.gov"
 		driverClassName="oracle.jdbc.OracleDriver"
 		username="neptox1"
-		password="nept0x1b8by"
+		password="secret"
 		maxIdle="3"
 		maxTotal="10"
 		removeAbandonedOnBorrow="true"

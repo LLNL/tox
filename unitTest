@@ -27,6 +27,14 @@ echo --  1 parameter, XML output, XSL transform with parameters --
 curl -X GET -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/nepsbx1.test.formatted?in_mask=YYYYMMDD&outputXform=src/xslt/test.xsl(title=parameters,host=nowhere.org)" > test13.html
 echo --  not implemented, expect error -------------
 curl -X GET -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/nepsbx1.test.pineapple" > test14.html
-echo --  no pl/sql, expect error -------------------
+echo --  no pl/sql, expect error and version -------------------
 curl -X GET -w "\n\nstatus code => %{http_code}\n\n" "http://localhost:8080/tox/" > test15.html
+echo --  convert XML to JSON -------------------
+curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testXml?outputFormat=JSON&in_root=asJson" > test16.html
+echo --  specify XML as XML -------------------
+curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testXml?outputFormat=XML&in_root=asXml" > test17.html
+echo --  default XML as XML -------------------
+curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testXml?in_root=asDefault" > test18.html
+echo --  set MEDIA-TYPE convert to TEXT -------------------
+curl -X GET -w "\n\nstatus code => %{http_code}\n\ncontent type => %{content_type}\n\n" "http://localhost:8080/tox/nepsbx1.test.testXml?in_root=toText&outputXform=src/xslt/text.xsl" > test19.html
 echo -----------------------------------------------

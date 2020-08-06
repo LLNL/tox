@@ -5,10 +5,10 @@
 	<xsl:param name="host"/>
 <!-- =========================================================================================== -->
 	<xsl:template match="/">
-		<xsl:comment><xsl:text >
-</xsl:text>XSLT Version: <xsl:value-of select="system-property('xsl:version')" /> <xsl:text >
-</xsl:text>XSLT Vendor: <xsl:value-of select="system-property('xsl:vendor')" /> <xsl:text >
-</xsl:text>XSLT Vendor URL: <xsl:value-of select="system-property('xsl:vendor-url')" /> <xsl:text >
+		<xsl:comment><xsl:text>
+</xsl:text>XSLT Version: <xsl:value-of select="system-property('xsl:version')" /> <xsl:text>
+</xsl:text>XSLT Vendor: <xsl:value-of select="system-property('xsl:vendor')" /> <xsl:text>
+</xsl:text>XSLT Vendor URL: <xsl:value-of select="system-property('xsl:vendor-url')" /> <xsl:text>
 </xsl:text></xsl:comment>
 		<table border="1" class="InnerTable">
 			<tr>
