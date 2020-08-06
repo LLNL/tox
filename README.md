@@ -30,6 +30,10 @@ This is version 2.10 of tox.
 Change History
 --------------
   
+Version 2.10.1:
+
+1. Added TEXT output format for case where PL/SQL outputs text directly and MIME is needed.
+  
 Version 2.10:
 
 1. Separated logging levels verbose and debug where debug include HTTP request dumps, but verbose does not.  Level of quiet still reports only errors.
