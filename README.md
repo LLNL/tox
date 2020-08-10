@@ -25,7 +25,7 @@ Output can be either XML or JSON.  Input and output can be transformed via XSLT.
 Version
 -------
 
-This is version 2.10 of tox.
+This is version 2.10.1 of tox.
 
 Change History
 --------------
