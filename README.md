@@ -25,10 +25,14 @@ Output can be either XML or JSON.  Input and output can be transformed via XSLT.
 Version
 -------
 
-This is version 2.10.1 of tox.
+This is version 2.11 of tox.
 
 Change History
 --------------
+  
+Version 2.11:
+
+1. Replaced HTTP payload reader to include CR/LF.
   
 Version 2.10.1:
 
