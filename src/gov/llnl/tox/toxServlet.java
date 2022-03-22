@@ -32,7 +32,7 @@ public class toxServlet extends HttpServlet
 		{
 		PrintWriter out = res.getWriter();
 		String result = null;
-		String p = null;
+		String payload = null;
 		String execute = "";
 		//-------------------------------------------
 		String path = req.getPathInfo();
@@ -45,8 +45,13 @@ public class toxServlet extends HttpServlet
 		else
 			{
 			apiVerbage v = new apiVerbage();
-			p = getPostPayload(req);
-			result = v.api(execute,req.getParameterMap(),p);
+			//---------------------------------------
+			DataInputStream dis = new DataInputStream(req.getInputStream());
+			byte[] bytes = new byte[req.getContentLength()];
+			dis.readFully(bytes);
+			payload = new String(bytes,"UTF-8");
+			//---------------------------------------
+			result = v.api(execute,req.getParameterMap(),payload);
 			// set MIME after result in case XSLT sets it
 			res.setContentType(v.getOutputMIME(req.getParameterMap()));
 			if (result.matches("\\[gov\\.llnl\\.tox.*\\]@[0-9.]* - error:[\\s\\S.]*"))
@@ -56,7 +61,8 @@ public class toxServlet extends HttpServlet
 			}
 		out.println(result);
 		//-------------------------------------------
-		if (debug.DEBUG) debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
+//		if (debug.DEBUG) debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,p);
+		if (debug.DEBUG) debug.logger("gov.llnl.tox.toxServlet","doVerb >> ",req,payload);
 		out.close();
 		}
 	//-----------------------------------------------
@@ -99,42 +105,6 @@ public class toxServlet extends HttpServlet
 	protected void doTrace(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 		{
 		notImplemented(req,res);
-		}
-	//-----------------------------------------------
-	private String getPostPayload(HttpServletRequest req)
-		{
-		StringBuilder postBuffer = new StringBuilder(512);
-		String result = "";
-		try
-			{
-			BufferedReader postReader = req.getReader();
-			String line = null;
-			//---------------------------------------
-			do
-				{
-				line = postReader.readLine();
-				if (line != null)
-					postBuffer.append(line);
-				}
-			while(line != null);
-			//---------------------------------------
-			String post = postBuffer.toString();
-			if (post.startsWith("xml=%"))
-				{
-				result = URLDecoder.decode(postBuffer.toString().substring(4),"UTF-8");
-				}
-			else
-				{
-				result = post;
-				}
-			//---------------------------------------
-			}
-		catch(Exception e)
-			{
-			result = debug.logger("gov.llnl.tox.toxServlet","error: getPostPayload>> ",e);
-			return(result);
-			}
-		return(result);
 		}
 	//-----------------------------------------------
 	}
