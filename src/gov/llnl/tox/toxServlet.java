@@ -114,7 +114,7 @@ public class toxServlet extends HttpServlet
 				{
 				line = postReader.readLine();
 				if (line != null)
-					postBuffer.append(line);
+					postBuffer.append(line+"\n");
 				}
 			while(line != null);
 			//---------------------------------------

@@ -1,5 +1,5 @@
 <!-- ======================================================================= -->
-<project name="tox" default="main" basedir="./">
+<project name="tox" default="main" basedir="./" xmlns:if="ant:if" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<!-- =================================================================== -->
 	<!-- get enviroment from OS -->
 	<!-- =================================================================== -->
@@ -10,9 +10,19 @@
 	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
 	<property name="version" value="2.10.1"/>
-	<property name="JDK" value="1.8"/>
+	<property name="JDK" value="11"/>
 	<property name="db.login.tox" value="neptox1/password@jdbc:oracle:thin:@nep-vm3.llnl.gov:1521:DCCDB"/>
 	<property name="db.login.example" value="nepsbx1/password@jdbc:oracle:thin:@nep-vm3.llnl.gov:1521:DCCDB"/>
+    <exec executable="git" outputproperty="git-tag">
+        <arg line="describe --tags --abbrev=0"/>
+    </exec>
+    <exec executable="git" outputproperty="git-branch">
+        <arg line="rev-parse --abbrev-ref HEAD"/>
+    </exec>
+    <exec executable="git" outputproperty="git-commit">
+        <arg line="rev-parse --short=11 HEAD"/>
+    </exec>
+	<property name="git.signature" value="${git-tag}:${git-branch}:${git-commit}"/>
 	<!-- =================================================================== -->
 	<!-- clean everything -->
 	<!-- =================================================================== -->
@@ -104,11 +114,11 @@
 	<target name="compile.java" description="compile java">
 		<echo message="compile.java ---------------------------"/>
 		<path id="classpath">
-			<pathelement location="lib/saxon9.jar"/>
+			<pathelement location="lib/saxon.jar"/>
 			<pathelement location="lib/json.jar"/>
 			<pathelement location="lib/servlet-api.jar"/>
 			<pathelement location="lib/ojdbc8.jar"/>
-			<pathelement location="lib/commons-codec-1.10.jar"/>
+			<pathelement location="lib/commons-codec.jar"/>
 		</path>
 		<mkdir dir="tmp/classes"/>
 		<javac source="${JDK}" target="${JDK}" srcdir="src" destdir="tmp/classes" debug="on" deprecation="on" optimize="on" includeAntRuntime="false">
@@ -145,11 +155,11 @@
 		</copy>
 		<copy todir="tmp/tox/WEB-INF/lib">
 			<fileset dir="lib">
-				<include name="saxon9.jar"/>
+				<include name="saxon.jar"/>
 				<include name="json.jar"/>
 				<include name="ojdbc8.jar"/>
-				<include name="commons-logging-1.2.jar"/>
-				<include name="commons-codec-1.10.jar"/>
+				<include name="commons-logging.jar"/>
+				<include name="commons-codec.jar"/>
 			</fileset>
 			<fileset dir="tmp">
 				<include name="tox.jar"/>
@@ -185,9 +195,27 @@
 		<echo message="load.test ----------------------------------"/>
 	</target>
 	<!-- =================================================================== -->
+	<!-- Ivy dependency tool -->
+	<!-- =================================================================== -->
+    <target name="ivy.resolve" description="retreive dependencies to ~/.ivy2">
+    	<ivy:settings file="ivysettings.xml"/>
+        <ivy:retrieve pattern="lib/ivy/[artifact]-[revision].[ext]"/>
+    </target>    
+	<!-- =================================================================== -->
+    <target name="ivy.report" depends="ivy.resolve" description="generates a report of dependencies after resolving them">
+    	<ivy:settings file="ivysettings.xml"/>
+        <ivy:report todir="docs/ivy"/>
+		<echo message="ivy report ----------------------------------- open docs/ivy/gov.llnl.nepedia-alchemy-default.html"/>
+    </target>
+	<!-- =================================================================== -->
+	<target name="ivy.clean-cache" description="delete the ~/.ivy2/cache">
+		<ivy:cleancache />
+	</target>
+	<!-- =================================================================== -->
 	<!-- default -->
 	<!-- =================================================================== -->
 	<target name="main" depends="clean, compile.plsql.tox, load.war" description="default">
+		<echo message="signature  --> ${version} build ${git.signature}"/>
 	</target>
 	<!-- =================================================================== -->
 </project>
