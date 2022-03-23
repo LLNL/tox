@@ -7,7 +7,6 @@
 	<!-- =================================================================== -->
 	<!-- set misc properties -->
 	<!-- =================================================================== -->
-	<buildnumber file="build.number"/>
 	<property name="name" value="tox"/>
 	<property name="version" value="2.10.1"/>
 	<property name="JDK" value="11"/>
@@ -127,7 +126,7 @@
 		</javac>
 		<manifest file="tmp/MANIFEST.MF">
 			<attribute name="Built-By" value="${env.USER}"/>
-			<attribute name="Implementation-Version" value="${version} build ${build.number}"/>
+			<attribute name="Implementation-Version" value="${version} build ${git.signature}"/>
 		</manifest>
 		<jar jarfile="tmp/tox.jar" basedir="tmp/classes" manifest="tmp/MANIFEST.MF"/>
 		<echo message="compile.java ---------------------------"/>
@@ -143,7 +142,7 @@
 				<include name="context.xml"/>
 			</fileset>
 		</copy>
-		<filter token="VERSION" value="${version} build ${build.number}"/>
+		<filter token="VERSION" value="${version} build ${git.signature}"/>
 		<tstamp>
 			<format property="when" pattern="yyyy-MM-dd HH:mm:ss"/>
 		</tstamp>
