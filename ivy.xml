@@ -1,0 +1,27 @@
+<ivy-module version="2.0">
+    <info organisation="gov.llnl.tox" module="tox"/>
+    <dependencies>
+        <dependency org="org.json" name="json" rev="20220320" conf="default">
+			<exclude module="junit"/>
+		</dependency>
+        <dependency org="com.oracle.database.jdbc" name="ojdbc8" rev="21.5.0.0" conf="default">
+			<exclude module="junit"/>
+		</dependency>
+<!-- 
+		works
+		<dependency org="net.sf.saxon" name="Saxon-HE" rev="11.2" conf="default">
+-->
+ 		<dependency org="net.sf.saxon" name="Saxon-HE" rev="10.8" conf="default">
+			<exclude module="junit"/>
+		</dependency>
+        <dependency org="javax.servlet" name="javax.servlet-api" rev="4.0.1" conf="default">
+			<exclude module="junit"/>
+		</dependency>
+        <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="default">
+			<exclude module="junit"/>
+		</dependency>
+        <dependency org="commons-codec" name="commons-codec" rev="1.15" conf="default">
+			<exclude module="junit"/>
+		</dependency>
+    </dependencies>
+</ivy-module>
