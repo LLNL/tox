@@ -25,10 +25,15 @@ Output can be either XML or JSON.  Input and output can be transformed via XSLT.
 Version
 -------
 
-This is version 2.10.1 of tox.
+This is version 2.10.2 of tox.
 
 Change History
 --------------
+  
+Version 2.10.2:
+
+1. Fixed payload reader to restore stripped CR/LF.
+1. Modernized dependencies with Ivy.
   
 Version 2.10.1:
 

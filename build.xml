@@ -8,7 +8,7 @@
 	<!-- set misc properties -->
 	<!-- =================================================================== -->
 	<property name="name" value="tox"/>
-	<property name="version" value="2.10.1"/>
+	<property name="version" value="2.10.2"/>
 	<property name="JDK" value="11"/>
 	<property name="db.login.tox" value="neptox1/password@jdbc:oracle:thin:@nep-vm3.llnl.gov:1521:DCCDB"/>
 	<property name="db.login.example" value="nepsbx1/password@jdbc:oracle:thin:@nep-vm3.llnl.gov:1521:DCCDB"/>
@@ -155,6 +155,10 @@
 		<copy todir="tmp/tox/WEB-INF/lib">
 			<fileset dir="lib">
 				<include name="saxon.jar"/>
+<!-- 
+				<include name="xmlresolver.jar"/>
+				<include name="xml-apis.jar"/>
+ -->
 				<include name="json.jar"/>
 				<include name="ojdbc8.jar"/>
 				<include name="commons-logging.jar"/>
@@ -205,6 +209,12 @@
     	<ivy:settings file="ivysettings.xml"/>
         <ivy:report todir="docs/ivy"/>
 		<echo message="ivy report ----------------------------------- open docs/ivy/gov.llnl.nepedia-alchemy-default.html"/>
+    </target>
+	<!-- =================================================================== -->
+    <target name="ivy.updates" description="looks for updates available">
+    	<ivy:settings file="ivysettings.xml"/>
+        <ivy:checkdepsupdate/>
+		<echo message="ivy updates -----------------------------------"/>
     </target>
 	<!-- =================================================================== -->
 	<target name="ivy.clean-cache" description="delete the ~/.ivy2/cache">
