@@ -155,10 +155,6 @@
 		<copy todir="tmp/tox/WEB-INF/lib">
 			<fileset dir="lib">
 				<include name="saxon.jar"/>
-<!-- 
-				<include name="xmlresolver.jar"/>
-				<include name="xml-apis.jar"/>
- -->
 				<include name="json.jar"/>
 				<include name="ojdbc8.jar"/>
 				<include name="commons-logging.jar"/>
